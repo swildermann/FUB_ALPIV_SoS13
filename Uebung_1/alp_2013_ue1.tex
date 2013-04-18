@@ -41,10 +41,23 @@ zuerst ausgeführt wird.
 Diese Aussage stimmt, da die Sequenz eines deterministischen Algorithmus die Folge der Schritte seines Ablaufes ist. Andersherum ist da jedoch nicht der Fall. 
 \subsection*{d)}
 Diese Aussage ist falsch, da ein nichtsequentieller Algorithmus auch determiniert sein kann. 
+Genau wie in b) kann das Ergebnis eines Algorithmusses bei gleichen Eingabewerten das selbe sein, auch wenn die Reihenfolge der Anweisungen
+nicht zwangsläufig die selbe sein. Beispiel: Das Ergebnis von zwei Additionen auf eine Variable X ist unabhängig davon, ob diese zwei Operationen
+zwischenzeitlich unterbrochen werden oder von mehreren Prozessoren nebenläufig ausgeführt werden (sofern die Addition atomar ist). 
+\subsection*{e)}
+Ein Beispiel für ein sequentiellen aber nicht determinierten Algorithmus ist ein Münzwurf. Hier erhält man bei gleichen Eingabewerten unterschiedliche Ergebnisse. Unter der Annahme dass das Ergebnis eines Zufallsexperiments nicht als Eingabe gesehen wird. 
+
 
 \section*{Übung 2}
 \subsection{a)}
 
+
+\section*{Übung 4}
+Die Ausgabe ist die Folge eines nicht sequentiellen Ablaufs der elektronischen Tafel beim Erfassen der Zeichen. So sind die gelb marktieren Threads mit den jeweiligen Zeichen für die jeweilige Spalte immer als letztes an der Reihe gewesen und haben so die vorherigen Zeichen überschrieben. Wenn man die einzlenen Sätze durchnummeriert, kann man schnell ausfindig machen welcher Prozess an welcher Stelle in der Zeichenkette zuletzt ``dran'' gewesen ist. Und zwar wie folgt: 44332255555555412244. Dabei wird deutlich, dass der Prozess Nr. 6 garnicht zum Zug gekommen ist. 
+
+\includegraphics{picture_a4.png}
+
+Ergebnis dieser Abfolge ist der Satz: ``Maurer ist ein Trottel !''
 
 
 
