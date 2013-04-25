@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{fancybox}
 \usepackage{multicol}
 \usepackage{graphicx}
@@ -31,10 +32,26 @@ Tutor: Alexander Steen, eingereicht am \today\\
 
 \section*{Aufgabe 1}
 \subsection*{a)}
+Bei diese Implementierung ist es möglich, dass zunächst $a[0]=a[1]=false$ gilt (das Prinzip der Unteilbarkeit der Abfrage eines Zustandes und seiner Veränderung ist nicht eingehalten \cite[vgl.][S. 39]{Maurer.2012}). Im anshcließenden Schleifendurchlauf kann durch die gleiche Ablaufreihenfolge $a[0]=a[1]=true$ gelten, wodurch beide Prozesse gleichzeitig ihren kritischen Bereich betreten würden. Zwar ist es warscheinlich, dass sich bei einem der nächsten Schleifendurchläufe eine andere Situation einstellt, aber grundsätlich ist so eine Implementierung zu verwerfen. 
+
+%Dijkstra schreib dazu in (): \begin{quote}\glqq If the two processes are about to enter their critical sections, it must be impossible to devise for them such finite speeds, that the decision which one of the two is the first to enter its critical section is postponed to eternity\grqq \end{quote}
+
 \subsection*{b)}
+Wenn beide Prozesse den kritischen Abschnit betreten möchten, wird einer dem andren immer den Vortitt lassen.
 \subsection*{c)}
+
 \section*{Aufgabe 2}
 \subsection*{a)}
+\subsubsection*{Gegenseitiger Ausschluss:}
+\textbf{Behauptung:} Der Algorithmus von Dekker erfüllt den wechselseitigen Ausschluss.\\
+\textbf{Beweis:} Angenommen, die Aussage ist falsch. Dann gibt es eine Ablaufreihenfolge bei der sich beide Prozesse in ihrem kritischen Abschnitt befinden. Daraus folgt, dass beide Prozesse die Austrittsbedingung  der äußeren $for$-Schleife erfüllt haben. Drei Fälle können unterschieden werden, die dazu führen könnten:
+\begin{enumerate}
+\item \textbf{Keiner der Beiden Prozesse läuft durch den Schleifenkörper.} Beiden Prozesse müssten dann die jeweilige Schleifenabbruchbedingung von Anfang an erfüllen ($\neg i_1$ für $P0$ und $\neg i_0$ für $P1$). Das ist aber nicht möglich. Sei $P1$ der zweite Prozess, der die $for$-Bedingung prüft. Dann hat $P0$ vorher durch die Anweisung  \texttt{interested[p]} dafür gesorgt, dass $P1$ in die Schleife eintreten muss. Aus Symetriegründen gilt dies auch für die andere Reihenfolge.
+\item \textbf{Beide Prozess durchlaufen den Schleifenkörper.} Dann muss einer der beiden Prozesse in der inneren $for$-Schleife hängen bleiben, da favoured erst nach Durchlaufen des kritischen Abschnitts (durch \textit{Unlock}) geändert wird.
+\item \textbf{Einer der Prozesse hat den Schleifenkörper durchlaufen während sich der andere bereits im kritischen Abschnitt befindet.} Dass geht auch nicht, denn Dann lässt sich leicht nachprüfen, dass er den kritischen Abschnitt nicht mehr betreten kann.
+\end{enumerate}
+Diese Fälle zeigen, dass die Annahme falsch ist. Somit garantiert der Dekker-Algorithmus den wechselseitigen Ausschluss. $ \qed$
+%Zunächst lässt sich festhalten, dass jeder Prozess nur die eigene Prozessvariable ändern kann. Prozess 0 fragt $c1$ nur ab (prüft solange ob Prozess 1 interesse bekundet, bis), solange $c1 = 0$ gilt (Prozess 1 kein Interesse bekundet), betritt den kritischen Bereich aber nur, wenn $c2  = 1$ gitl. Daher können die beiden Prozesse nie gleichzeitig in ihreren kritischen Bereichen sein.
 \subsection*{b)}
 
 \section*{Aufgabe 3}
@@ -44,6 +61,8 @@ Tutor: Alexander Steen, eingereicht am \today\\
 \subsection*{b)}
 
 
+\bibliographystyle{agsm}
+\bibliography{alp_IV}
 
 
 \end{document}
