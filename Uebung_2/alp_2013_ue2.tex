@@ -38,6 +38,22 @@ Tutor: Alexander Steen, eingereicht am \today\\
 \subsection*{b)}
 
 \section*{Aufgabe 3}
+Der Algorithmus ist nicht korrekt, da es Situationen gibt, in denen mehr als ein Prozess im kritischen Abschnitt ist. 
+
+Ein möglicher Ablauf für den erweiterten PETERSON-Algorithmus, der zu einer Situation führt, bei der zwei der drei Prozesse im kritischen Bereich sind, sieht wie folgt aus: 
+
+\begin{itemize}
+ \item Alle drei Prozesse (1,2,3) führen die Lock-Funktion bis zur dritten Zeile aus und setzen damit interested auf true und favoured auf $(p+1)\%3$ 
+ \item Zuletzt hat Prozess 3 favoured auf 1 gesetzt. 
+ \item Damit springt Prozess 1 in den kritischen Abschnit, da die Bedingungen für die (warte-) for-Schleife nicht mehr erfüllt sind ($1 \&\& 0 || 1  \&\& 0$)=0.
+ \item Nachdem der kritische Abschnitt abgearbeitet wurde setzt der Prozess 1 sein interested auf false. 
+ \item Prozess 2 prüft die Warte-Bedingung mit dem Ergebnis ($1 \&\& 0 || 0 \&\& 1$)=0,so dass Prozess 2 die Warte-Schleife verlässt und seinen kritischen Abschnitt betritt. 
+ \item Während Prozess 2 nun seinen kritischen Abschnitt ausführt, prüft Prozess 3 die Warte-Bedingung:
+ \item \textbf{Die Überprüfung der Warte-Bedingung ergibt ($0 \&\& 1 || 1 \&\& 0)=0$, so dass Prozess 3 nun ebenfalls den kritischen Abschnitt betritt.}
+ \item Prozess 2 und Prozess 3 befinden sich nun gleichzeitig im kritischen Abschnitt. 
+ \end{itemize}
+
+Damit ist der gegenseitige Ausschluss nicht gewährleistet und die Erweiterung des Algorithmusses nicht korrekt. 
 
 \section*{Aufgabe 4}
 \subsection*{a)}
