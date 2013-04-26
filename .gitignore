@@ -1,7 +1,7 @@
 # Latex #
 #########
 
-*-aux
+*.aux
 *.bbl
 *.blg
 *.log
