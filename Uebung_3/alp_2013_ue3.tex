@@ -30,6 +30,36 @@
 Tutor: Alexander Steen, eingereicht am \today\\
 \hrule
 \section*{Aufgabe 1}
+Eine binäre Semaphore kann wie ein Schloss eingesetzt werden.
+Die Spezifikation einer binärer Semaphore ist in \citep[S. 54]{Maurer.2012} und die Implementierung von \texttt{Lock} und \texttt{Unlock} in \citep[S. 55]{Maurer.2012} zu finden. 
+%\begin{enumerate}
+%\item[] \texttt{s.P: $\langle$await s;s = false$\rangle$}
+%\item[] \texttt{s.V: $\langle$s = true$\rangle$}
+%\end{enumerate}
+Initialer Wert für \texttt{s: true} (bzw. 1).
+\begin{table}[H]
+\centering
+\begin{tabular}{c|l}
+\hline 
+Aufruf & Auswirkung \\ 
+\hline 
+P1: s.P & \texttt{s = false}; P1 betritt kritischen Bereich\\
+P2: s.P & \texttt{s = false}; P2 muss warten: \textit{aktiv} $\rightarrow$ \textit{blockiert}\\
+P3: s.P & \texttt{s = false}; P3 muss warten:  \textit{aktiv} $\rightarrow$ \textit{blockiert} \\
+P1: s.V & P1 verlässt kritischen Bereich; \texttt{s = true}; P3: \textit{blockiert} $\rightarrow$ \textit{bereit}; \\ &   P3 betritt kritischen Bereich; \texttt{s = false}\\ 
+P4: s.P &\texttt{s = false}; P4 muss warten: \textit{aktiv} $\rightarrow$ \textit{blockiert} \\
+P3: s.V & P3 verlässt kritischen Bereich; \texttt{s = true}; P2: \textit{blockiert} $\rightarrow$
+\textit{bereit}; \\ &   P2 betritt kritischen Bereich; \texttt{s = false}\\ 
+P5: s.P & \texttt{s = false}; P5: \textit{aktiv} $\rightarrow$ \textit{blockiert} \\
+\hline 
+\end{tabular} 
+\caption{Protokoll der Aufrufe}
+\end{table}
+\textbf{Erläuterung:} Die Tatsache, das P3 in diesem Beispiel als zweiter Prozess den kritischen Bereich betritt, ergibt sich durch die vorgegebene Reihenfolge der Aufrufe, da P3 der nächste Prozess ist, der eine V-Operation ausführt und
+\glqq[...] Prozesse P- und V-Operationen stets paarig -- in dieser Reihenfolge -- ausführen [müssen]\cite[vgl.][S. 55]{Maurer.2012}.\grqq
+
+Grundsätzlich gilt: \glqq[...] ein Aufruf von s.V() realisiert den Übergang von \textit{blockiert} $\rightarrow$ \textit{bereit} für einen der auf s blockierten Prozesse [...]\cite[vgl.][S. 55]{Maurer.2012}.\grqq\ Welcher Prozess das ist, hängt von der Prozessverwaltung des Betriebssystems ab.
+
 \section*{Aufgabe 2}
 \subsection*{a)}
 \subsection*{b)}
