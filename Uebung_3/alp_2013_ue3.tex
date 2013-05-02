@@ -65,6 +65,19 @@ Grundsätzlich gilt: \glqq[...] ein Aufruf von s.V() realisiert den Übergang vo
 \subsection*{b)}
 \subsection*{c)}
 \section*{Aufgabe 3}
+
+Gegenseitiger Ausschluss bedeutet (nach Definition von Maurer) dass ``sich zu jeder Zeit höchstens ein Prozess im kritischen Abschnitt befindet''. 
+Der Algorithmus von Barz sichert den gegenseitigen Ausschluss nur dann, wenn der Parameter ``n'' (bzw. die Variable ``val'') mit 1 initalisiert wird. \\
+Nachfolgend wird daher gezeigt, dass der Algorithmus von Barz sicher stellt, dass sich immer nur maximal n Prozesse im kritischen Abschnitt befinden. 
+In der Initalisierungs-Funktion wird der Wert von ``val'' auf n gesetzt und danach überprüft ob dieser Wert gleich 0 ist. Wenn dem so ist, so darf nie ein Prozess den kritischen Abschnitt betreten und wird deshalb im Anschluss mit cs.Lock gesperrt und ist nicht mehr erreichbar. \\
+Sobald ein Prozess den kritischen Abschnitt betreten möchte, ruft dieser die Funktion P() auf. Hierbei wird dann zuerst der kritische Abschnitt vorerst gesperrt (cs.lock) und dann wird auch der Zugriff auf die Variable ``val'' (mutex.lock) gesperrt. Danach wird der Wert von ``val'' um eins verringert, um zählen zu können, wie viele Prozesse noch in den kritischen Abschnitt dürfen. Falls noch ``Platz'' für weitere Prozesse ist (also val größer 0), wird der Eintritt der anderen Prozesse gewährt, in dem der kritsche Abschnitt wieder entsperrt wird (cs.Unlock). Anschließend wird der Zugriff auf die Variable ``val'' wieder entsperrt (mutex.Unlock). Durch das Sperren der Variable ``val'' wird sicher gestellt, dass keine falschen Informationen in dieser gespeichert sein können. \\
+Wenn ein Prozess nun den kritischen Abschnitt verlassen möchte, ruft dieser die Funktion V() auf. Auch hier wird erst  wieder der Zugriff auf die Variable ``val'' gesperrt, so dass nur diese Funktion den Parameter ändern kann. Da dieser Prozess jetzt für anderen Prozess ``Platz macht'', wird der Wert von ``val'' um eins erhöht (x.val++). Sofern der kritische Abschnitt vorher gesperrt war, weil die maximale Anzahl der Prozesse im kritischen Abschnitt erreicht wurde, wird dieser jetzt entsperrt (if x.val == 1  \{ x.cs.unlock()\}). Ist die maximale Anzahl (n) der Prozesse im kritischen Abschnitt noch nicht erreicht worden, so wurde der k.A. durch die Funktion P() auch noch nicht gesperrt. Anschließend wird wieder der Zugriff auf die Variable ``val'' zugelassen, in dem mutex.unlock() ausgeführt wird. \\
+Da mit ``mutex.lock()'' und ``mutex.unlock()'' immer sicher gestellt wird, dass die Variable ``val'' nicht irrtürmlich geändert wird, ist die Anzahl der freien Plätze im kritischen Abschnitt jederzeit korrekt. Auf dieser Basis wird schließlich der kritische Abschnitt gesperrt und entsperrt. Sofern n mit 1 initalisiert wird und V() nur dann verwendet wird, wenn vorher P() verwendet wurde, sichert der Algorithmus von Barz den gegenseitigen Ausschluss. 
+
+
+
+
+
 \section*{Aufgabe 4}
 
 
