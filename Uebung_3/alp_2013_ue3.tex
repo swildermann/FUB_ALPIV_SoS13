@@ -62,8 +62,12 @@ Grundsätzlich gilt: \glqq[...] ein Aufruf von s.V() realisiert den Übergang vo
 
 \section*{Aufgabe 2}
 \subsection*{a)}
+Eher nein. Ein Prozess wartet immer nur auf einen Semaphore, welcher aber selbst wieder auf einen anderen warten kann. Faktisch wartet der letzte Prozess dann zwar auf zwei Prozesse, algorithmisch gesehen ist er aber nur von einem Semaphore abhängig und wartet auch nur auf diesen. Vergleichbar ist dies mit einem Zug der vor einem Semaphore wartet. Unabhängig davon ob nur ein anderer Zug oder mehrere für das ``Halt''-Signal zuständig sind, sieht der wartende Zug nur ein Signal und kann nicht erkennen welche oder wie viele Züge dafür verantwortlich sind. 
 \subsection*{b)}
+Ob ein Prozess, der auf einen Semaphore wartet rechenbereit sein kann, hängt davon ob, ob das Betriebssystem Semaphore unterstützt oder nicht. 
+Wenn das Betriebssystem Semaphore unterstützt, so setzt es den Zustand des wartenden Prozesses auf ``blockiert'' und dieser ist nicht ``bereit''. Wenn diese Unterstützung nicht gegeben ist, so glaubt das Betriebssystem wegen fehlender Informationen dass dieser Prozess rechenbereit ist, auch wenn höhere Schichten die Ausführung blockieren. 
 \subsection*{c)}
+Für eine Verallgemeinerung des Semaphorkonzeptes spricht, dass die wartenden Prozesse dann die Information erhalten könnten auf wie viele Semaphore sie warten und in Folge dessen Hardwareoptimierungen beim Füllen der Pipeline darauf Rücksicht nehmen könnten. Dagegen spricht allerdings die zunehmende Komplexität der Semaphore. Schon der informale Beweis der Funktionalität von binären Semaphoren ist extrem aufwändig. Ein korrekter und hinreichender Beweis von allgemeinen Semaphore ist entsprechend noch aufwändiger und schwieriger. 
 \section*{Aufgabe 3}
 
 Gegenseitiger Ausschluss bedeutet (nach Definition von Maurer) dass ``sich zu jeder Zeit höchstens ein Prozess im kritischen Abschnitt befindet''. 
