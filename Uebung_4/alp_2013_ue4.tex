@@ -8,22 +8,28 @@
 \usepackage{fancybox}
 \usepackage{multicol}
 \usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
 \usepackage{color}
 \usepackage{colortbl}
+
 % Define user colors using the RGB model
 \definecolor{dunkelgrau}{rgb}{0.8,0.8,0.8}
 \definecolor{hellgrau}{rgb}{0.95,0.95,0.95}
+\definecolor{middlegray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{orange}{rgb}{0.8,0.3,0.3}
+\definecolor{yac}{rgb}{0.6,0.6,0.1}
+
+% Zitation und Literaturverzeichnis
 \usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
-\usepackage{float}
 \usepackage{cite}
 \usepackage{url}
 \bibliographystyle{unsrtnat}
 \usepackage[numbers]{natbib}
 %\usepackage[T1]{fontenc}
 
-
 \begin{document}
-\onecolumn
 \subsection*{ALP4 SoSe 2013, Di. 16-18}
 \section*{Lösung Übungsblatt 4}
 \textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677), \\ Sven Wildermann (Matr.-Nr.: 4567553)}\\
@@ -33,7 +39,36 @@ Tutor: Alexander Steen, eingereicht am \today\\
 \section*{Aufgabe 2}
 \section*{Aufgabe 3}
 \section*{Aufgabe 4}
+% Formatierung für das Listing
+\lstset{
+   basicstyle=\scriptsize\ttfamily,
+   keywordstyle=\bfseries\ttfamily\color{orange},
+   stringstyle=\color{green}\ttfamily,
+   commentstyle=\color{middlegray}\ttfamily,
+   emph={square}, 
+   emphstyle=\color{blue}\texttt,
+   emph={[2]root,base},
+   emphstyle={[2]\color{yac}\texttt},
+   showstringspaces=false,
+   flexiblecolumns=false,
+   tabsize=2,
+   numbers=left,
+   numberstyle=\tiny,
+   numberblanklines=true,
+   stepnumber=1,
+   numbersep=10pt,
+   xleftmargin=15pt
+}
 \subsection*{a)}
+Eine Semaphore kann in Java wie folgt implementiert werden:
+
+% Semaphore-listing 
+\lstinputlisting
+    [caption={Implemntierung eines Semaphor in Java. (Die Methoden \texttt{suspend()} und \texttt{resume()} sind veraltet und sollten in der Praxis nicht mehr verwendet werden.) }
+       \label{lst:javaclass},
+       captionpos=b,language=JAVA,
+       ]
+{listings/Semaphore.java}
 \subsection*{b)}
 \subsection*{c)}
 
