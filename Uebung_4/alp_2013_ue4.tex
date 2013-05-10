@@ -30,47 +30,6 @@
 %\usepackage[T1]{fontenc}
 
 \begin{document}
-\subsection*{ALP4 SoSe 2013, Di. 16-18}
-\section*{Lösung Übungsblatt 4}
-\textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677), \\ Sven Wildermann (Matr.-Nr.: 4567553)}\\
-Tutor: Alexander Steen, eingereicht am \today\\
-\hrule
-\section*{Aufgabe 1}
-
-
-\section*{Aufgabe 2}
-Annahme: Jeder der Philosophen hat nur endlich lange Hunger. 
-Grundlage der Lösung ist die auf Seite 89 im Buch dargestellte Struktur für universelle kritische Abschnitte. Jeder der 5 Philosophen wird durch eine Prozessklasse $p_i$ in Form eines unsigned int repräsentiert (im Uhrzeigersinn von 1 bis 5 durchnumeriert). Der Konstruktor der Struktur \textbf{type imp struct} erhält somit für die Anzahl der Prozessklassen den Parameter $nK=5$. Weiterhin wird ein Array der Größe 5 von booleschen Werten $nP[5]$ benötigt, wobei $nP[k]$ angibt ob der Philosoph der zur Prozessklasse $k$ gehört gerade isst oder nicht.   Das Spektrum der Eintrittsbedinungen \textbf{c(k uint)} gibt für den Philosophen der Prozessklasse $k$ genau dann true zurück, wenn die Philosophen rechts und links von ihm (also Prozessklasse $k+1 \mod 5$ und $k-1 \mod 5$) sich nicht im kritischen k A befindet (also nicht essen). \textbf{in(x Any, k uint)} setzt nP[k] = true und \textbf{out(x Any, k uint)} setzt nP[k] = false. Die Funktionen \textbf{Enter()}, \textbf{Leave()}, \textbf{vall()} und \textbf{Blocked()
-} bleiben wie im Buch Seite 90 implementiert.
-
-\begin{lstlisting} 
-const (p_i = i ; nK = 5)
-var (nP[5] bool; x *Imp)
-
-func c(k uint) bool{
-	return nP[k+1 mod 5] == false && nP[k-1 mod 5]
-}
-
-func in(x Any, k uint){
-	nP[k] = true	
-}
-
-func out(x Any, k uint){
-	nP[k] = false
-}
-
-func (x *ImpCS) PhilosophEat() { x.Enter(p_i, nil) }
-
-func main() { x = New(nK, c, in, out) }
-
-
-\end{lstlisting}
-\section*{Aufgabe 3}
-
-Für jeden Philosophen wird ein 2-faches Semaphor verwendet, wobei der erste Wert des Tupels für seine linke Gabel und der zweite Wert für seine rechte Gabel steht.  Da sich je 2 Philosophen eine Gabel teilen, teilen sie sich auch die entsprechenden Variablen innerhalb der Semaphore. Nach Definition wird der kritische Abschnitt von einem Philosophen betreten, sobald sowohl seine linke als auch seine rechte Gabel verfügbar ist (und er eintrittswillig ist). Daher gilt: $S.P: < await: linke-Gabel-und-rechte-Gabel-frei> $ und $S.V: <linkeGabel.freigeben; rechteGabel.freigeben >$
-
-
-\section*{Aufgabe 4}
 % Formatierung für das Listing
 \lstset{
    basicstyle=\scriptsize\ttfamily,
@@ -91,18 +50,48 @@ Für jeden Philosophen wird ein 2-faches Semaphor verwendet, wobei der erste Wer
    numbersep=10pt,
    xleftmargin=15pt
 }
+\subsection*{ALP4 SoSe 2013, Di. 16-18}
+\section*{Lösung Übungsblatt 4}
+\textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677), \\ Sven Wildermann (Matr.-Nr.: 4567553)}\\
+Tutor: Alexander Steen, eingereicht am \today\\
+\hrule
+\section*{Aufgabe 1}
+
+
+\section*{Aufgabe 2}
+Annahme: Jeder der Philosophen hat nur endlich lange Hunger. 
+Grundlage der Lösung ist die auf Seite 89 im Buch dargestellte Struktur für universelle kritische Abschnitte. Jeder der 5 Philosophen wird durch eine Prozessklasse $p_i$ in Form eines unsigned int repräsentiert (im Uhrzeigersinn von 1 bis 5 durchnumeriert). Der Konstruktor der Struktur \textbf{type imp struct} erhält somit für die Anzahl der Prozessklassen den Parameter $nK=5$. Weiterhin wird ein Array der Größe 5 von booleschen Werten $nP[5]$ benötigt, wobei $nP[k]$ angibt ob der Philosoph der zur Prozessklasse $k$ gehört gerade isst, oder nicht.   Das Spektrum der Eintrittsbedinungen \textbf{c(k uint)} gibt für den Philosophen der Prozessklasse $k$ genau dann true zurück, wenn die Philosophen rechts und links von ihm (also Prozessklasse $k+1 \mod 5$ und $k-1 \mod 5$) sich nicht im kritischen k A befindet (also nicht essen). \textbf{in(x Any, k uint)} setzt nP[k] = true und \textbf{out(x Any, k uint)} setzt nP[k] = false. Die Funktionen \textbf{Enter()}, \textbf{Leave()}, \textbf{vall()} und \textbf{Blocked()} bleiben wie im Buch Seite 90 implementiert.
+
+\lstinputlisting[caption={Problem der speisenden Philosophen mit universellen kritischen Abschnitten in Go.}
+       \label{lst:go},
+       captionpos=b,
+       ]
+{listings/philosophen.go}
+\section*{Aufgabe 3}
+
+Für jeden Philosophen wird ein 2-faches Semaphor verwendet, wobei der erste Wert des Tupels für seine linke Gabel und der zweite Wert für seine rechte Gabel steht.  Da sich je 2 Philosophen eine Gabel teilen, teilen sie sich auch die entsprechenden Variablen innerhalb der Semaphore. Nach Definition wird der kritische Abschnitt von einem Philosophen betreten, sobald sowohl seine linke als auch seine rechte Gabel verfügbar ist (und er eintrittswillig ist). Daher gilt: $S.P: < await: linke-Gabel-und-rechte-Gabel-frei> $ und $S.V: <linkeGabel.freigeben; rechteGabel.freigeben>$
+\section*{Aufgabe 4}
 \subsection*{a)}
-Das in \citep{Maurer.2012} erläuterte Prozessmodel unterscheidet fünf Zustände: \textit{nicht existent}, \textit{bereit}, \textit{aktiv}, \textit{blockiert} und \textit{beendet}.
-Eine Semaphore kann in Java wie folgt implementiert werden:
+Ein Semaphor benötigt als Datenstrukturen einen Zähler vom Typ Integer, der mit einer nicht-negativen Zahl initialisiert wird und eine Warteschalange, die leer initialisiert wird. Der Zählerstand gibt gib an, wie viele Prozesse noch den kritischen Abschnitt betreten dürfen, bevor eine Blockade eintritt. Die Warteschlange nimmt die blockierten Prozesse auf.
+\subsubsection*{P-Operation}
+Die P-Operation dekrementiert den Zähler und blockiert den aufrufenden Prozess genau dann, falls das durch den Zähler repräsentierte Potential erschöpft ist. Dabei wird der Prozess in die Warteschalage der wartenden Prozesse eingereiht.
+\subsubsection*{V-Operation}
+Die V-Operation inkrementiert den Zählerund gibt einen ggf. blokierten Prozess aus der Warteschalnge frei, falls wieder Potential dazu vorhanden ist.
+
+Durch die Verwendung einer FIFO-Warteschlange wird das Deblockieren der Prozesse in der zeitlichen Reihenfolge, in der der Zugang zum kritischen Abschnitt beantragt wurde, umgesetzt. Darüber hinaus wird gewährleistet, das jeder blockierte Prozess irgendwann auch wieder deblockiert wird. Es ist wichtig, dass die logische Unteilbarkeit der Listenmanipulationen sichergestellt wird. Dazu sollten die P- und V-Operationen mit geeigneten Methoden für exclusiven Zugriff gekapselt werden.
+%Der Übergang \textit{nicht existent} $\rightarrow$ \textit{bereit} wird durch das erzeugen
+%Ein Semaphor kann in Java wie folgt implementiert werden:
 % Semaphore-listing 
-\lstinputlisting[caption={Implemntierung eines Semaphor in Java nach \cite{Kramann}. (Die Methoden \texttt{suspend()} und \texttt{resume()} sind veraltet und sollten in der Praxis nicht mehr verwendet werden.) }
+
+Das in \citep{Maurer.2012} erläuterte Prozessmodel unterscheidet fünf Zustände: \textit{nicht existent}, \textit{bereit}, \textit{aktiv}, \textit{blockiert} und \textit{beendet}. Ein Semaphor steuert die Übergänge \textit{aktiv} $\rightarrow$ \textit{blockiert} und \textit{blockiert} $\rightarrow$ \textit{bereit}. Der erste Übergang kann durch den Aufruf einer P-Operation ausgelöst werden, der zweite durch eine V-Operation.
+
+\subsection*{b)}
+\subsection*{c)}
+\lstinputlisting[caption={Implemntierung eines Semaphor in Java. }
        \label{lst:javaclass},
        captionpos=b,language=JAVA,
        ]
-{listings/Semaphore.java}
-\subsection*{b)}
-\subsection*{c)}
-
+{listings/Semaphor.java}
 \bibliographystyle{agsm}
 \bibliography{alp_IV}
 
