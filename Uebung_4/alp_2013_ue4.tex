@@ -56,8 +56,42 @@
 Tutor: Alexander Steen, eingereicht am \today\\
 \hrule
 \section*{Aufgabe 1}
+Das (2te) Leser-Schreiber-Problem wurde in \citep{Maurer.2012} auf den Seiten 85 bis 91 ausführlich besprochen und mit universellen kritischen Abschnitten gelöst. Die hier gemachten Anmerkungen zu einer faireren Lösung beziehen sich auf diesen Lösungsanssatz und die damit verbundene Implmentierung. 
 
+Für eine fairere Variante des gegebenen Alogrithmus müssen lediglich die Protokolle der Prozessklassen angepasst werden. Mit den Bedingungen
+\begin{align}
+nR == 0\ \&\&\ (bW == 0\ ||\ ! zR) \\
+nW == 0\ \&\&\ (bW == 0\ ||\ ! zR) 
+\end{align}
+findet ein Wechsel zwischen Lesern und Schreibern genau dann statt, wenn jeweils andere warten. Dabei stellt $zR$ eine boolsche Variable dar, die protokolliert, ob Leser oder Schreiber zuletzt im kritischenn Abschnitt waren. Sie wird beim Eintritt von Lesern gesetzt und von Schreibern gelöscht.  Die Variablen $nR$ bzw. $nW$ stehen für die Anzahl der Leser bzw. Schhreiber, $bR$ bzw. $bW$ für die Anzahl der blockierten Leser bzw Schreiber \citep[vgl.][S. 84]{Maurer.2012}.
 
+Somit muss sowohl die Funktion $c$, die die Synchronisationstabelle übersetzt, als auch die Funktionen $i$ wie folgt angepasst werden:
+\begin{lstlisting}
+func  c(k uint) bool {
+	if k == r {
+		return nW = 0 && (bW == 0 || !zR
+	}
+	return nR == 0 && nW == 0 && (bR == 0 || zR
+}
+
+func i(x Any, k uint) {
+	if k == r {
+		nR++
+		zR = true
+	} else {
+		nW = 1
+		nR = false
+	}
+}
+\end{lstlisting}
+%func o(x Any, k uint) {
+%	if k == r {
+%		nR--
+%	} else {
+%		nW = 0
+%	}
+%}
+%\end{lstlisting}
 \section*{Aufgabe 2}
 Annahme: Jeder der Philosophen hat nur endlich lange Hunger. 
 Grundlage der Lösung ist die auf Seite 89 im Buch dargestellte Struktur für universelle kritische Abschnitte. Jeder der 5 Philosophen wird durch eine Prozessklasse $p_i$ in Form eines unsigned int repräsentiert (im Uhrzeigersinn von 1 bis 5 durchnumeriert). Der Konstruktor der Struktur \textbf{type imp struct} erhält somit für die Anzahl der Prozessklassen den Parameter $nK=5$. Weiterhin wird ein Array der Größe 5 von booleschen Werten $nP[5]$ benötigt, wobei $nP[k]$ angibt ob der Philosoph der zur Prozessklasse $k$ gehört gerade isst, oder nicht.   Das Spektrum der Eintrittsbedinungen \textbf{c(k uint)} gibt für den Philosophen der Prozessklasse $k$ genau dann true zurück, wenn die Philosophen rechts und links von ihm (also Prozessklasse $k+1 \mod 5$ und $k-1 \mod 5$) sich nicht im kritischen k A befindet (also nicht essen). \textbf{in(x Any, k uint)} setzt nP[k] = true und \textbf{out(x Any, k uint)} setzt nP[k] = false. Die Funktionen \textbf{Enter()}, \textbf{Leave()}, \textbf{vall()} und \textbf{Blocked()} bleiben wie im Buch Seite 90 implementiert.
@@ -72,26 +106,79 @@ Grundlage der Lösung ist die auf Seite 89 im Buch dargestellte Struktur für un
 Für jeden Philosophen wird ein 2-faches Semaphor verwendet, wobei der erste Wert des Tupels für seine linke Gabel und der zweite Wert für seine rechte Gabel steht.  Da sich je 2 Philosophen eine Gabel teilen, teilen sie sich auch die entsprechenden Variablen innerhalb der Semaphore. Nach Definition wird der kritische Abschnitt von einem Philosophen betreten, sobald sowohl seine linke als auch seine rechte Gabel verfügbar ist (und er eintrittswillig ist). Daher gilt: $S.P: < await: linke-Gabel-und-rechte-Gabel-frei> $ und $S.V: <linkeGabel.freigeben; rechteGabel.freigeben>$
 \section*{Aufgabe 4}
 \subsection*{a)}
-Ein Semaphor benötigt als Datenstrukturen einen Zähler vom Typ Integer, der mit einer nicht-negativen Zahl initialisiert wird und eine Warteschalange, die leer initialisiert wird. Der Zählerstand gibt gib an, wie viele Prozesse noch den kritischen Abschnitt betreten dürfen, bevor eine Blockade eintritt. Die Warteschlange nimmt die blockierten Prozesse auf.
+Ein Semaphor benötigt als Datenstrukturen einen Zähler vom Typ Integer, der mit einer nicht-negativen Zahl initialisiert wird und eine Warteschalange, die leer initialisiert wird. 
+\begin{lstlisting}[language=JAVA]
+int count;
+BlockingQueue<Thread> queue;
+
+public Semaphor(int initialcount){
+	count = initialcount;
+	queue = new LinkedBlockingQueue<Thread>();
+}
+\end{lstlisting}
+Der Zählerstand gibt gib an, wie viele Prozesse noch den kritischen Abschnitt betreten dürfen, bevor eine Blockade eintritt. Die Warteschlange nimmt die blockierten Prozesse auf.
 \subsubsection*{P-Operation}
 Die P-Operation dekrementiert den Zähler und blockiert den aufrufenden Prozess genau dann, falls das durch den Zähler repräsentierte Potential erschöpft ist. Dabei wird der Prozess in die Warteschalage der wartenden Prozesse eingereiht.
+\begin{lstlisting}[language=JAVA]
+public void P(){
+	synchronized(this){
+		if(count==0){
+			try{
+				queue.put(Thread.currentThread());
+				wait();
+			}catch(InterruptedException ie){
+				System.err.println("caught InterruptedException in wait()");
+			}
+		}
+		count--;
+	}
+}
+\end{lstlisting}
 \subsubsection*{V-Operation}
-Die V-Operation inkrementiert den Zählerund gibt einen ggf. blokierten Prozess aus der Warteschalnge frei, falls wieder Potential dazu vorhanden ist.
+Die V-Operation inkrementiert den Zähler und gibt einen ggf. blokierten Prozess aus der Warteschalnge frei, falls wieder Potential dazu vorhanden ist.
+\begin{lstlisting}[language=JAVA]
+public void V(){
+	synchronized(this){
+		count++;
+		if(count==1) {
+			queue.poll().notify();
+		}
+	}
+}
+\end{lstlisting}
+\subsubsection*{Erläuterung}
+Durch die Verwendung einer FIFO-Warteschlange wird das Deblockieren der Prozesse in der zeitlichen Reihenfolge, in der der Zugang zum kritischen Abschnitt beantragt wurde, umgesetzt. Darüber hinaus wird gewährleistet, das jeder blockierte Prozess irgendwann auch wieder deblockiert wird. 
 
-Durch die Verwendung einer FIFO-Warteschlange wird das Deblockieren der Prozesse in der zeitlichen Reihenfolge, in der der Zugang zum kritischen Abschnitt beantragt wurde, umgesetzt. Darüber hinaus wird gewährleistet, das jeder blockierte Prozess irgendwann auch wieder deblockiert wird. Es ist wichtig, dass die logische Unteilbarkeit der Listenmanipulationen sichergestellt wird. Dazu sollten die P- und V-Operationen mit geeigneten Methoden für exclusiven Zugriff gekapselt werden.
+Es ist wichtig, dass die logische Unteilbarkeit der Listenmanipulationen sichergestellt wird. Andernfalls könnte u.a. die Integrität der Datenstrukturen korrumpiert werden, wenn nebenläufige Prozesse auf sie zurückgreifen. Dazu sollten die P- und V-Operationen mit geeigneten Methoden für exclusiven Zugriff gekapselt werden.
 %Der Übergang \textit{nicht existent} $\rightarrow$ \textit{bereit} wird durch das erzeugen
 %Ein Semaphor kann in Java wie folgt implementiert werden:
 % Semaphore-listing 
-
 Das in \citep{Maurer.2012} erläuterte Prozessmodel unterscheidet fünf Zustände: \textit{nicht existent}, \textit{bereit}, \textit{aktiv}, \textit{blockiert} und \textit{beendet}. Ein Semaphor steuert die Übergänge \textit{aktiv} $\rightarrow$ \textit{blockiert} und \textit{blockiert} $\rightarrow$ \textit{bereit}. Der erste Übergang kann durch den Aufruf einer P-Operation ausgelöst werden, der zweite durch eine V-Operation.
-
 \subsection*{b)}
+Das Konvoi-Problem kann dadurch umgangen werden, dass bei einer V-Operation nicht der älteste Prozess in die Bereitliste übernommen wird, sondern ein zufällig gewählter. 
+\begin{lstlisting}[language=JAVA]
+public void V(){
+	synchronized(this){
+		count++;
+		if(count==1) {
+			Thread[] prozesse;
+			prozesse = (Thread[]) queue.toArray();
+			int i = (int) (Math.random()*prozesse.length+1);
+			prozesse[i].notify();
+		}
+	}
+}
+\end{lstlisting}
+Weitere Möglichkeiten sind in \cite[][S. 106]{Maurer.2012} geschildert.
 \subsection*{c)}
+Semaphore können in Java wie folgt implementiert werden:
 \lstinputlisting[caption={Implemntierung eines Semaphor in Java. }
        \label{lst:javaclass},
        captionpos=b,language=JAVA,
        ]
 {listings/Semaphor.java}
+\subsubsection*{Anmerkung}
+Einige der hier zur Synchronisation verwendeten sprachlichen Mittel nutzen intern das Monitorkonzept. Es scheint vieleicht etwas seltsam Semaphore auf diese Art zu implementieren; die Funktionalität und Klarheit stand hier aber im Vordergrund.
 \bibliographystyle{agsm}
 \bibliography{alp_IV}
 
