@@ -1,0 +1,91 @@
+\documentclass[11pt,a4paper,DIV=10,]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fancybox}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{colortbl}
+% Define user colors using the RGB model
+\definecolor{dunkelgrau}{rgb}{0.8,0.8,0.8}
+\definecolor{hellgrau}{rgb}{0.95,0.95,0.95}
+\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
+\usepackage{float}
+\usepackage{cite}
+\usepackage{url}
+\bibliographystyle{unsrtnat}
+\usepackage[numbers]{natbib}
+%\usepackage[T1]{fontenc}
+
+
+\begin{document}
+\onecolumn
+\subsection*{ALP4 SoSe 2013, Di. 16-18}
+\section*{Lösung Übungsblatt 3}
+\textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677), \\ Sven Wildermann (Matr.-Nr.: 4567553)}\\
+Tutor: Alexander Steen, eingereicht am \today\\
+\hrule
+\section*{Aufgabe 1}
+Eine binäre Semaphore kann wie ein Schloss eingesetzt werden.
+Die Spezifikation einer binärer Semaphore ist in \citep[S. 54]{Maurer.2012} und die Implementierung von \texttt{Lock} und \texttt{Unlock} in \citep[S. 55]{Maurer.2012} zu finden. 
+%\begin{enumerate}
+%\item[] \texttt{s.P: $\langle$await s;s = false$\rangle$}
+%\item[] \texttt{s.V: $\langle$s = true$\rangle$}
+%\end{enumerate}
+Initialer Wert für \texttt{s: true} (bzw. 1).
+\begin{table}[H]
+\centering
+\begin{tabular}{c|l}
+\hline 
+Aufruf & Auswirkung \\ 
+\hline 
+P1: s.P & \texttt{s = false}; P1 betritt kritischen Bereich\\
+P2: s.P & \texttt{s = false}; P2 muss warten: \textit{aktiv} $\rightarrow$ \textit{blockiert}\\
+P3: s.P & \texttt{s = false}; P3 muss warten:  \textit{aktiv} $\rightarrow$ \textit{blockiert} \\
+P1: s.V & P1 verlässt kritischen Bereich; \texttt{s = true}; P3: \textit{blockiert} $\rightarrow$ \textit{bereit}; \\ &   P3 betritt kritischen Bereich; \texttt{s = false}\\ 
+P4: s.P &\texttt{s = false}; P4 muss warten: \textit{aktiv} $\rightarrow$ \textit{blockiert} \\
+P3: s.V & P3 verlässt kritischen Bereich; \texttt{s = true}; P2: \textit{blockiert} $\rightarrow$
+\textit{bereit}; \\ &   P2 betritt kritischen Bereich; \texttt{s = false}\\ 
+P5: s.P & \texttt{s = false}; P5: \textit{aktiv} $\rightarrow$ \textit{blockiert} \\
+\hline 
+\end{tabular} 
+\caption{Protokoll der Aufrufe}
+\end{table}
+\textbf{Erläuterung:} Die Tatsache, das P3 in diesem Beispiel als zweiter Prozess den kritischen Bereich betritt, ergibt sich durch die vorgegebene Reihenfolge der Aufrufe, da P3 der nächste Prozess ist, der eine V-Operation ausführt und
+\glqq[...] Prozesse P- und V-Operationen stets paarig -- in dieser Reihenfolge -- ausführen [müssen]\cite[vgl.][S. 55]{Maurer.2012}.\grqq
+
+Grundsätzlich gilt: \glqq[...] ein Aufruf von s.V() realisiert den Übergang von \textit{blockiert} $\rightarrow$ \textit{bereit} für einen der auf s blockierten Prozesse [...]\cite[vgl.][S. 55]{Maurer.2012}.\grqq\ Welcher Prozess das ist, hängt von der Prozessverwaltung des Betriebssystems ab.
+
+\section*{Aufgabe 2}
+\subsection*{a)}
+Eher nein. Ein Prozess wartet immer nur auf einen Semaphore, welcher aber selbst wieder auf einen anderen warten kann. Faktisch wartet der letzte Prozess dann zwar auf zwei Prozesse, algorithmisch gesehen ist er aber nur von einem Semaphore abhängig und wartet auch nur auf diesen. Vergleichbar ist dies mit einem Zug der vor einem Semaphore wartet. Unabhängig davon ob nur ein anderer Zug oder mehrere für das ``Halt''-Signal zuständig sind, sieht der wartende Zug nur ein Signal und kann nicht erkennen welche oder wie viele Züge dafür verantwortlich sind. 
+\subsection*{b)}
+Ob ein Prozess, der auf einen Semaphore wartet rechenbereit sein kann, hängt davon ob, ob das Betriebssystem Semaphore unterstützt oder nicht. 
+Wenn das Betriebssystem Semaphore unterstützt, so setzt es den Zustand des wartenden Prozesses auf ``blockiert'' und dieser ist nicht ``bereit''. Wenn diese Unterstützung nicht gegeben ist, so glaubt das Betriebssystem wegen fehlender Informationen dass dieser Prozess rechenbereit ist, auch wenn höhere Schichten die Ausführung blockieren. 
+\subsection*{c)}
+
+\section*{Aufgabe 3}
+
+Gegenseitiger Ausschluss bedeutet (nach Definition von Maurer) dass ``sich zu jeder Zeit höchstens ein Prozess im kritischen Abschnitt befindet''. 
+Der Algorithmus von Barz sichert den gegenseitigen Ausschluss nur dann, wenn der Parameter ``n'' (bzw. die Variable ``val'') mit 1 initalisiert wird. \\
+Nachfolgend wird daher gezeigt, dass der Algorithmus von Barz sicher stellt, dass sich immer nur maximal n Prozesse im kritischen Abschnitt befinden. 
+In der Initalisierungs-Funktion wird der Wert von ``val'' auf n gesetzt und danach überprüft ob dieser Wert gleich 0 ist. Wenn dem so ist, so darf nie ein Prozess den kritischen Abschnitt betreten und wird deshalb im Anschluss mit cs.Lock gesperrt und ist nicht mehr erreichbar. \\
+Sobald ein Prozess den kritischen Abschnitt betreten möchte, ruft dieser die Funktion P() auf. Hierbei wird dann zuerst der kritische Abschnitt vorerst gesperrt (cs.lock) und dann wird auch der Zugriff auf die Variable ``val'' (mutex.lock) gesperrt. Danach wird der Wert von ``val'' um eins verringert, um zählen zu können, wie viele Prozesse noch in den kritischen Abschnitt dürfen. Falls noch ``Platz'' für weitere Prozesse ist (also val größer 0), wird der Eintritt der anderen Prozesse gewährt, in dem der kritsche Abschnitt wieder entsperrt wird (cs.Unlock). Anschließend wird der Zugriff auf die Variable ``val'' wieder entsperrt (mutex.Unlock). Durch das Sperren der Variable ``val'' wird sicher gestellt, dass keine falschen Informationen in dieser gespeichert sein können. \\
+Wenn ein Prozess nun den kritischen Abschnitt verlassen möchte, ruft dieser die Funktion V() auf. Auch hier wird erst  wieder der Zugriff auf die Variable ``val'' gesperrt, so dass nur diese Funktion den Parameter ändern kann. Da dieser Prozess jetzt für anderen Prozess ``Platz macht'', wird der Wert von ``val'' um eins erhöht (x.val++). Sofern der kritische Abschnitt vorher gesperrt war, weil die maximale Anzahl der Prozesse im kritischen Abschnitt erreicht wurde, wird dieser jetzt entsperrt (if x.val == 1  \{ x.cs.unlock()\}). Ist die maximale Anzahl (n) der Prozesse im kritischen Abschnitt noch nicht erreicht worden, so wurde der k.A. durch die Funktion P() auch noch nicht gesperrt. Anschließend wird wieder der Zugriff auf die Variable ``val'' zugelassen, in dem mutex.unlock() ausgeführt wird. \\
+Da mit ``mutex.lock()'' und ``mutex.unlock()'' immer sicher gestellt wird, dass die Variable ``val'' nicht irrtürmlich geändert wird, ist die Anzahl der freien Plätze im kritischen Abschnitt jederzeit korrekt. Auf dieser Basis wird schließlich der kritische Abschnitt gesperrt und entsperrt. Sofern n mit 1 initalisiert wird und V() nur dann verwendet wird, wenn vorher P() verwendet wurde, sichert der Algorithmus von Barz den gegenseitigen Ausschluss. 
+
+
+
+
+
+\section*{Aufgabe 4}
+
+
+\bibliographystyle{agsm}
+\bibliography{alp_IV}
+
+\end{document}
