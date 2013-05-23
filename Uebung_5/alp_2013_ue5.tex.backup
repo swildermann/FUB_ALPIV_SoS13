@@ -22,13 +22,14 @@
 \definecolor{yac}{rgb}{0.6,0.6,0.1}
 
 % Zitation und Literaturverzeichnis
-\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
-\usepackage{cite}
-\usepackage{url}
-\bibliographystyle{unsrtnat}
-\usepackage[numbers]{natbib}
-\usepackage[T1]{fontenc}
+%\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
+%\usepackage{cite}
+%\usepackage{url}
+%\bibliographystyle{unsrtnat}
+%\usepackage[numbers]{natbib}
+%\usepackage[T1]{fontenc}
 
+\begin{document}
 % Formatierung für das Listing
 \lstset{
    basicstyle=\scriptsize\ttfamily,
@@ -49,15 +50,11 @@
    numbersep=10pt,
    xleftmargin=15pt
 }
-\begin{document}
-% ==== HEADER ==== 
 \subsection*{ALP4 SoSe 2013, Di. 16-18}
 \section*{Lösung Übungsblatt 5}
 \textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677)} \\ \textbf{Sven Wildermann (Matr.-Nr.: 4567553)}\\
 Tutor: Alexander Steen, eingereicht am \today\\
 \hrule
-% === HEADER END ===
-
 \section*{Aufgabe 1}
 \begin{enumerate}
  \item Mit Hilfe des Tiefensuche-Algorithmus kann ein Graph auf Zyklenfreiheit untersucht werden. Hierzu überprüft man mit diesem Algorithmus, ob der
@@ -67,45 +64,29 @@ Tutor: Alexander Steen, eingereicht am \today\\
  \begin{lstlisting}
       function ISACYCLIC(GRAPH G=(V,E)): bool {
           B:={}
-          for all v in V do { marked[v]:=false; p(v):=nil}
-          for all v in V do {
+          for all v€V do { marked[v]:=false; p(v):=nil}
+          for all v€V do {
 	      if not marked[v] then
 	      DFS-ACYCLIC(v)
 	      }
           if B:={} then return false else return true
        }
-       
-       procedure DFS-ACYCLIC(Node v){
-            marked[v]:=true
-            for all w in N(v) do
-               if not marked[w] then
-                      p(w):=v
-                      DFS-ACYCLIC(w)
-               else if p(v) =/ w then
-                     B:=B + (v,w)    // + ist hier die Mengenvereinigung
-       }
  \end{lstlisting}
-  Komplexität: Da jede Kante und jeder Knoten genau einmal besucht wird, beträgt die Laufzeit von Tiefensuche O(\#V+\#E), wobei \#V = Anzahl der Knoten und \#E = Anzahl der Kanten.  
+  Komplexität: Da jede Kante und jeder Knoten genau einmal besucht wird, beträgt die Laufzeit von Tiefensuche O(V+E), wobei V = Anzahl der Knoten und E = Anzahl der Kanten.  
 
 \end{enumerate}
 
 
 
 \section*{Aufgabe 2}
-TODO CHRIS  !
+TODO CHRIS 
 \section*{Aufgabe 3}
-Diese Lösung des Leser-Schreiber-Problems funktioniert nicht. Ein Gegenbeispiel: 
+Diese Lösung des Leser-Schreiber-Problems funktioniert nicht. Ein Beispiel: 
 \begin{itemize}
- \item R1 möchte auf die Datei F1 lesen und führt daher die Funktion ReaderIn (erfolgreich) aus.
- \item Nun möchte (während R1 liest) W1 auf die Datei F1 schreibend zugreifen. Da nun aber die Bedingung (nR größer 0) erfüllt ist, wartet W1 indem es c.Wait() ausführt. 
- \item Hinweis: Diese Wait-Anweisung befindet sich innerhalb des Blocks, in dem m.Lock aktiv ist. 
- \item m.Unlock wird von W1 also solange nicht ausgeführt wie R1 noch liest. 
- \item Jetzt möchte R1 den Lesevorgang auf F1 wieder beenden, in dem es ReaderOut() ausführt. 
- \item ReaderOut() kann allerdings nicht ausgeführt werden, da m.Lock() nicht ausgeführt werden kann - weil W1 diesen Lock nicht wieder freigegeben hat. 
- \item \textbf{Damit ist ein Livelock entstanden. Der Lesezugriff auf die Datei kann ohne Neustart des Systems nicht mehr geschlossen werden. Eine Dateiveränderung ist mit dieser Lösung nicht mehr möglich, sobald auch nur ein Thread lesenden Zugriff auf die Datei hat.}
+ \item 
 \end{itemize}
 
 
 \section*{Aufgabe 4}
-TODO CHRIS !
+TODO CHRIS
 \end{document}
