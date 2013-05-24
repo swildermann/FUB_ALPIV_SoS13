@@ -22,11 +22,11 @@
 \definecolor{yac}{rgb}{0.6,0.6,0.1}
 
 % Zitation und Literaturverzeichnis
-%\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
-%\usepackage{cite}
-%\usepackage{url}
-%\bibliographystyle{unsrtnat}
-%\usepackage[numbers]{natbib}
+\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
+\usepackage{cite}
+\usepackage{url}
+\bibliographystyle{unsrtnat}
+\usepackage[numbers]{natbib}
 %\usepackage[T1]{fontenc}
 
 \begin{document}
@@ -64,21 +64,34 @@ Tutor: Alexander Steen, eingereicht am \today\\
  \begin{lstlisting}
       function ISACYCLIC(GRAPH G=(V,E)): bool {
           B:={}
-          for all v€V do { marked[v]:=false; p(v):=nil}
-          for all v€V do {
-	      if not marked[v] then
-	      DFS-ACYCLIC(v)
-	      }
+          for all v in V do { marked[v]:=false; p(v):=nil}
+          for all v in V do {
+	      		if not marked[v] then
+	      		DFS-ACYCLIC(v)
+	     	 	}
           if B:={} then return false else return true
        }
  \end{lstlisting}
   Komplexität: Da jede Kante und jeder Knoten genau einmal besucht wird, beträgt die Laufzeit von Tiefensuche O(V+E), wobei V = Anzahl der Knoten und E = Anzahl der Kanten.  
-
 \end{enumerate}
-
-
-
 \section*{Aufgabe 2}
+Die hier vorgestellten Implementierungnen ensprechen in etwa dem Algorithmus, den Horare in \cite{Hoare1974} vorgestellt hat.
+
+Der Monitor hat vier Zugriffsfunktionen: 
+\begin{tabbing}
+Links \= Funktionsname\= Rechts \kill
+1.\> \texttt{start\_read} \> wird durch reader aufgerufen, der lesen möchte \\
+2.\> \texttt{end\_read} \>  wird durch reader aufgerufen, der lesen beendet\\
+3.\> \texttt{start\_write} \> wird durch writer aufgerufen, der schreiben möchte \\
+4.\> \texttt{end\_write} \> wird durch writer aufgerufen, der schreiben beendet \\
+\end{tabbing}
+\begin{enumerate}
+\item[a)] Implemetierung in C
+\item[b)] Implementierung in Go
+\end{enumerate}
 \section*{Aufgabe 3}
 \section*{Aufgabe 4}
+Das Krümelmonsterproblem kann im Prinzip durch den in \citep{Maurer.2012} gegebenen Algorithmus gelöst werden.
+\bibliographystyle{agsm}
+\bibliography{alp_IV}
 \end{document}
