@@ -1,0 +1,92 @@
+\documentclass[11pt,a4paper,DIV=10,]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fancybox}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{colortbl}
+
+% Define user colors using the RGB model
+\definecolor{dunkelgrau}{rgb}{0.8,0.8,0.8}
+\definecolor{hellgrau}{rgb}{0.95,0.95,0.95}
+\definecolor{middlegray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{orange}{rgb}{0.8,0.3,0.3}
+\definecolor{yac}{rgb}{0.6,0.6,0.1}
+
+% Zitation und Literaturverzeichnis
+%\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
+%\usepackage{cite}
+%\usepackage{url}
+%\bibliographystyle{unsrtnat}
+%\usepackage[numbers]{natbib}
+%\usepackage[T1]{fontenc}
+
+\begin{document}
+% Formatierung für das Listing
+\lstset{
+   basicstyle=\scriptsize\ttfamily,
+   keywordstyle=\bfseries\ttfamily\color{orange},
+   stringstyle=\color{green}\ttfamily,
+   commentstyle=\color{middlegray}\ttfamily,
+   emph={square}, 
+   emphstyle=\color{blue}\texttt,
+   emph={[2]root,base},
+   emphstyle={[2]\color{yac}\texttt},
+   showstringspaces=false,
+   flexiblecolumns=false,
+   tabsize=2,
+   numbers=left,
+   numberstyle=\tiny,
+   numberblanklines=true,
+   stepnumber=1,
+   numbersep=10pt,
+   xleftmargin=15pt
+}
+\subsection*{ALP4 SoSe 2013, Di. 16-18}
+\section*{Lösung Übungsblatt 5}
+\textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677)} \\ \textbf{Sven Wildermann (Matr.-Nr.: 4567553)}\\
+Tutor: Alexander Steen, eingereicht am \today\\
+\hrule
+\section*{Aufgabe 1}
+\begin{enumerate}
+ \item Mit Hilfe des Tiefensuche-Algorithmus kann ein Graph auf Zyklenfreiheit untersucht werden. Hierzu überprüft man mit diesem Algorithmus, ob der
+ Graph G eine Rückwärtskante besitzt oder nicht. Methode: Erweitere DFS um Speicherung der Rückwärtskanten (Back-Kante / B-Kante), sobald man von ``v''
+ aus auf einem markierten Knoten ``u'' trifft, hat man eine B-Kante gefunden, falls ``u'' nicht der direkte Vorgänger von ``v'' ist. 
+ \item Algorithmus: 
+ \begin{lstlisting}
+      function ISACYCLIC(GRAPH G=(V,E)): bool {
+          B:={}
+          for all v€V do { marked[v]:=false; p(v):=nil}
+          for all v€V do {
+	      if not marked[v] then
+	      DFS-ACYCLIC(v)
+	      }
+          if B:={} then return false else return true
+       }
+ \end{lstlisting}
+  Komplexität: Da jede Kante und jeder Knoten genau einmal besucht wird, beträgt die Laufzeit von Tiefensuche O(V+E), wobei V = Anzahl der Knoten und E = Anzahl der Kanten.  
+
+\end{enumerate}
+
+
+
+\section*{Aufgabe 2}
+TODO CHRIS 
+\section*{Aufgabe 3}
+Diese Lösung des Leser-Schreiber-Problems funktioniert nicht. Ein Beispiel: 
+\begin{itemize}
+ \item 
+\end{itemize}
+
+
+\section*{Aufgabe 4}
+TODO CHRIS
+\end{document}

@@ -27,7 +27,7 @@
 \usepackage{url}
 \bibliographystyle{unsrtnat}
 \usepackage[numbers]{natbib}
-%\usepackage[T1]{fontenc}
+\usepackage[T1]{fontenc}
 
 % Formatierung für das Listing
 \lstset{
@@ -69,9 +69,9 @@ Tutor: Alexander Steen, eingereicht am \today\\
           B:={}
           for all v in V do { marked[v]:=false; p(v):=nil}
           for all v in V do {
-	      		if not marked[v] then
-	      		DFS-ACYCLIC(v)
-	     	 	}
+	      if not marked[v] then
+	      DFS-ACYCLIC(v)
+	      }
           if B:={} then return false else return true
        }
        
@@ -86,22 +86,13 @@ Tutor: Alexander Steen, eingereicht am \today\\
        }
  \end{lstlisting}
   Komplexität: Da jede Kante und jeder Knoten genau einmal besucht wird, beträgt die Laufzeit von Tiefensuche O(\#V+\#E), wobei \#V = Anzahl der Knoten und \#E = Anzahl der Kanten.  
-\end{enumerate}
-\section*{Aufgabe 2}
-Die hier vorgestellten Implementierungnen ensprechen in etwa dem Algorithmus, den Horare in \cite{Hoare1974} vorgestellt hat.
 
-Der Monitor hat vier Zugriffsfunktionen: 
-\begin{tabbing}
-Links \= Funktionsname\= Rechts \kill
-1.\> \texttt{start\_read} \> wird durch reader aufgerufen, der lesen möchte \\
-2.\> \texttt{end\_read} \>  wird durch reader aufgerufen, der lesen beendet\\
-3.\> \texttt{start\_write} \> wird durch writer aufgerufen, der schreiben möchte \\
-4.\> \texttt{end\_write} \> wird durch writer aufgerufen, der schreiben beendet \\
-\end{tabbing}
-\begin{enumerate}
-\item[a)] Implemetierung in C
-\item[b)] Implementierung in Go
 \end{enumerate}
+
+
+
+\section*{Aufgabe 2}
+TODO CHRIS  !
 \section*{Aufgabe 3}
 Diese Lösung des Leser-Schreiber-Problems funktioniert nicht. Ein Gegenbeispiel: 
 \begin{itemize}
@@ -111,12 +102,10 @@ Diese Lösung des Leser-Schreiber-Problems funktioniert nicht. Ein Gegenbeispiel
  \item m.Unlock wird von W1 also solange nicht ausgeführt wie R1 noch liest. 
  \item Jetzt möchte R1 den Lesevorgang auf F1 wieder beenden, in dem es ReaderOut() ausführt. 
  \item ReaderOut() kann allerdings nicht ausgeführt werden, da m.Lock() nicht ausgeführt werden kann - weil W1 diesen Lock nicht wieder freigegeben hat. 
- \item \textbf{Damit ist ein Livelock entstanden. Der Lesezugriff auf die Datei kann ohne Neustart des Systems nicht mehr geschlossen werden. Eine Datei\-veränderung ist mit dieser Lösung nicht mehr möglich, sobald auch nur ein Thread lesenden Zugriff auf die Datei hat.}
+ \item \textbf{Damit ist ein Livelock entstanden. Der Lesezugriff auf die Datei kann ohne Neustart des Systems nicht mehr geschlossen werden. Eine Dateiveränderung ist mit dieser Lösung nicht mehr möglich, sobald auch nur ein Thread lesenden Zugriff auf die Datei hat.}
 \end{itemize}
 
 
 \section*{Aufgabe 4}
-Das Krümelmonsterproblem kann im Prinzip durch den in \citep{Maurer.2012} gegebenen Algorithmus gelöst werden.
-\bibliographystyle{agsm}
-\bibliography{alp_IV}
+TODO CHRIS !
 \end{document}
