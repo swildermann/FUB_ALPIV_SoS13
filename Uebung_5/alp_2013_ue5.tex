@@ -49,6 +49,7 @@
    numbersep=10pt,
    xleftmargin=15pt
 }
+
 \begin{document}
 % ==== HEADER ==== 
 \subsection*{ALP4 SoSe 2013, Di. 16-18}
@@ -98,10 +99,17 @@ Links \= Funktionsname\= Rechts \kill
 3.\> \texttt{start\_write} \> wird durch writer aufgerufen, der schreiben möchte \\
 4.\> \texttt{end\_write} \> wird durch writer aufgerufen, der schreiben beendet \\
 \end{tabbing}
-\begin{enumerate}
-\item[a)] Implemetierung in C
-\item[b)] Implementierung in Go
-\end{enumerate}
+Die Variable \texttt{rc} zählt die aktiven Lerser, \texttt{rq} die wartenden Leser und \texttt{wq} die wartenden Schreiber. \texttt{busy} zeigt an, ob gerade ein Schreiber am seine Arbeit verrichtet. \\ \\
+a) Implemetierung in C
+\begin{multicols}{2}[]
+\lstinputlisting{a2/rw.c}
+\end{multicols}
+\ \\
+b) Implementierung in Go
+\begin{multicols}{2}[]
+\lstinputlisting{a2/rw.go}
+\end{multicols}
+
 \section*{Aufgabe 3}
 Diese Lösung des Leser-Schreiber-Problems funktioniert nicht. Ein Gegenbeispiel: 
 \begin{itemize}
@@ -116,7 +124,14 @@ Diese Lösung des Leser-Schreiber-Problems funktioniert nicht. Ein Gegenbeispiel
 
 
 \section*{Aufgabe 4}
-Das Krümelmonsterproblem kann im Prinzip durch den in \citep{Maurer.2012} gegebenen Algorithmus gelöst werden.
+Das Krümelmonsterproblem kann im Prinzip durch den im Buch gegebenen Algorithmus für das Konto  gelöst werden \citep[vgl.][S. 135]{Maurer.2012}.
+\begin{multicols}{2}[]
+\lstinputlisting[caption={Krümelmonsteproblem in Go. }
+       \label{lst:javaclass},
+       captionpos=b,language=C,
+       ]
+{a2/kruemel.go}
+\end{multicols}
 \bibliographystyle{agsm}
 \bibliography{alp_IV}
 \end{document}
