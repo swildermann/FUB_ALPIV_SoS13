@@ -60,8 +60,31 @@ Tutor: Alexander Steen, eingereicht am \today\\
 % === HEADER END ===
 
 \section*{Aufgabe 1}
+Gleich vorweg: Das Beispielprogramm 
+ \lstinputlisting{hello.go}
+erzeugt folgende Ausgabe:
+ \begin{lstlisting}[numbers=none]
+chris@swan-station ~/go/src/test/hello $ vim hello.go 
+chris@swan-station ~/go/src/test/hello $ go install
+chris@swan-station ~/go/src/test/hello $ hello
+throw: all goroutines are asleep - deadlock!
 
-TODO CHRIS
+goroutine 1 [chan receive]:
+main.main()
+	/home/chris/go/src/test/hello/hello.go:10 +0x42
+
+goroutine 2 [syscall]:
+created by runtime.main
+	/usr/local/go/src/pkg/runtime/proc.c:221
+ \end{lstlisting}
+Dagegen führten verschieden Versuche mit\texttt{ n > 0} zum Erfolg. Die Implementierung ist also für \texttt{n==0} entgegen der im Buch gemachten Behauptung scheinbar nicht korrekt! 
+
+\textbf{Begründung:} Gilt \texttt{n == 0}, wird mit \texttt{x.c = make(chan bool, n)} ein Kanal für \textit{synchronen} Borschaftenaustausch realisiert \citep[vgl.][S. 168]{Maurer.2012}. Somit kann der Kanal keine Botschaften puffern: Sobald eine Botschaft gesendet wurde, ist der Sender so lange blockiert, bis ein anderer Prozess empfangsbereit ist und die Botschaft abgenommen hat \citep[vgl.][S. 166]{Maurer.2012}. Des Weiteren blockiert eine Empfangsanweisung (hier: \texttt{<-x.c} in Zeile 9) einen Prozess solange, bis eine Botschaft empfangen wurde \cite[vgl.][]{TourOfGo}. Für das zu betrachtende Beispiel bedeutet das konkret: 
+\begin{enumerate}
+\item Nach der Initialisierung eines Semaphor ist der Kanal \texttt{c} zwar durch \texttt{make} initialisiert, entält aber keine Botschaft, da die for-Schleife in Zeile 6 nicht durchlaufen wurde.
+\item Bei Aufruf der P-Operation wird eine Botaschaft empfangen, sofern der Kanal eine enthält. Andernfalls wird der aufrufende Prozess blockiert, bis eine Botschaft verfügbar ist. Letzteres ist beim erstmaligen Aufruf von P() der Fall. Da bei einem regulären Gebrauch der Semaphoroperationen (erst P(), dann V()) die 'erlösende' Botschaft, die zum Betreten des kritischen Bereiches nötig ist, erst beim Velassen erzeugt wird, entsteht der von Go erkannte Deadlock. 
+\end{enumerate}
+\textit{Anmerkung:} Möglicherweise lässt sich die Implementierung durch geringfügige Modifikationen 'retten' (z.B. manuelles Einfügen einer Botschaft, Vertauschen von P() und V(), etc.). Diese zu benennen scheint uns aber nicht das Ziel der Aufgabe zu sein.
 \section*{Aufgabe 2}
 
 TODO CHRIS 
@@ -80,8 +103,6 @@ Dies funktioniert natürlich auch umgekehrt. Will der Sender zu einem Zeitpunkt 
  \item Ablaufreihenfolge angeben, die Verklemmung erzeugt \\
  
 \end{enumerate}
-
-
-
-
+\bibliographystyle{agsm}
+\bibliography{alp_IV}
 \end{document}
