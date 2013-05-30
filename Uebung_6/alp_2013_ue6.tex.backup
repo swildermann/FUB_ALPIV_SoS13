@@ -67,10 +67,25 @@ TODO CHRIS
 TODO CHRIS 
 \section*{Aufgabe 3}
 Der Effekt des asynchronen Nachrichtenaustauchs lässt sich mit synchronem Austausch mit Hilfe eines Puffers erzeugen. So kann dann mindestens einer der Prozesse eine nicht blockierende Sende-oder Empfangsoperations nutzen. Der Pufferspeicher blockiert nur dann, wenn dieser voll ist. Der Empfänger kann daher jederzeit bereit für eingehende Verbindungen sein, da er diese erst abarbeitet, wenn es für diesen günstig ist. Der Sender hingegen kann damit unabhängig vom Empfänger seine Nachrichten verschicken, da er davon ausgehen kann, dass diese im Puffer des Empfängers landen. 
-Statt der direkten Verbindung: ``Sender - Empfänger'' gibt es jetzt genau genommen die Verbindung ``Sender - Buffer - Empfänger''. 
-
+Statt der direkten Verbindung: ``Sender - Empfänger'' gibt es jetzt genau genommen die Verbindung ``Sender - Puffer - Empfänger''.  \\
+Dies funktioniert natürlich auch umgekehrt. Will der Sender zu einem Zeitpunkt mehrere Nachrichten verschicken, kann er diese in seinen eigenen Puffer legen und den Sendevorgang als ``abgeschlossen'' kennzeichen. Der Puffer versendet dann letztlich (aus technischer Schicht) die Nachrichten. 
 
 \section*{Aufgabe 4}
+\begin{enumerate}
+ \item direkte Übersetzung des Codes nach go 
+  % here comes some code
+ \lstinputlisting{kanaloperation.go}
+ % here is the end of the code
+ 
+ \item Ablaufreihenfolge angeben, die Verklemmung erzeugt \\
+\begin{itemize}
+ \item 
+\end{itemize}
+
+
+ 
+\end{enumerate}
+
 
 
 

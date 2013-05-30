@@ -78,6 +78,16 @@ Dies funktioniert natürlich auch umgekehrt. Will der Sender zu einem Zeitpunkt 
  % here is the end of the code
  
  \item Ablaufreihenfolge angeben, die Verklemmung erzeugt \\
+ In Anlehnung an das Programm auf S. 169 im Buch wird folgt hier eine Reihenfolge der Befehle, die zu einer Verklemmung führen. 
+\begin{enumerate}
+  \item in ``order'': $c<-1$
+  \item in ``add'': $tmp=<-c$
+  \item in ``add'': $c<-1$
+  \item in ``add'': $c<- (<-c+temp$ hier wird nun beim $ <-c $auf die Botschaft gewartet
+  \item in ``order'' $<-c$ hier wird nun ebenfalls beim $<-c$ auf die Botschaft gewartet
+  \item Da nun doppelt gewartet und gleichzeitig nicht mehr gesendet wird, kommt es hier zur Verklemmung. 
+\end{enumerate}
+
  
 \end{enumerate}
 
