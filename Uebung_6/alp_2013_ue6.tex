@@ -86,8 +86,13 @@ Dagegen führten verschieden Versuche mit\texttt{ n > 0} zum Erfolg. Die Impleme
 \end{enumerate}
 \textit{Anmerkung:} Möglicherweise lässt sich die Implementierung durch geringfügige Modifikationen 'retten' (z.B. manuelles Einfügen einer Botschaft, Vertauschen von P() und V(), etc.). Diese zu benennen scheint uns aber nicht das Ziel der Aufgabe zu sein.
 \section*{Aufgabe 2}
+Auf den ersten Blick fällt auf, dass die Version des veralteten Go-Tutorials zwei Kanäle (\texttt{ch}, \texttt{ch1}) für die erste 100 (prinzipiel: beliebig viele) Primzahlen benutzt, die Version im Buch dagen 315 für eine begrenzte Anzahl von Primzahlen (hier: 313). Der 'Grad der Nebenläufigkeit' schein somit in der Buchversion höher.
+   
+Die Funktion \texttt{Start} im Buch entspricht der Gunktion \texttt{generate} des veralteten Go-Tutorials: In \texttt{start} werden zunächst (mit Ausnahme der 2) nur ungerade Zahlen erzeugt, während \texttt{generate }jede natürliche Zahl beginnend mit der 2 generiert. Somit ist \texttt{start} etwas effizienter.
 
-TODO CHRIS 
+Die Funktion \texttt{sieve} im Buch entspricht der Funktion \texttt{filter} des veralteten Go-Tutorials: \texttt{sieve} übernimmt drei Parameter vom Typ \texttt{chan uint} (\texttt{in}, \texttt{out}, \texttt{off}) \texttt{filter} dagegen nur zwei dieser Art (\texttt{in}, \texttt{out}) und zusätzlich eine positive Ganzzahl (hier: Primzahl) \texttt{prime}. Prinzipiell prüfen beide Funktionen die Zahlen, die über den Ein\-gabe\-ka\-nal \texttt{in} empfangen werden. Nur wenn diese keine Vielfachen einer bereits gefundenen Primzahl sind, werden sie über den Ausgabekanal \texttt{out} weitergeleitet (also nicht herausgesiebt). Der Unterschied liegt hier in der Art,  wie die gefundenen Primzahlen prozessiert werden: In der Go-Tutorial-Version werden gefundene Primzahlen direkt ausgegeben, in der Buchversion ist dafür die Funktion \texttt{write} zuständig.
+
+%In der Go-Tutorial-Version arbeiten Generator und Filter zwar simultan,  In \texttt{sieve} wird die Primzahl über den Kanal \texttt{off} and die Funktion \texttt{write} versendet.
 \section*{Aufgabe 3}
 Der Effekt des asynchronen Nachrichtenaustauchs lässt sich mit synchronem Austausch mit Hilfe eines Puffers erzeugen. So kann dann mindestens einer der Prozesse eine nicht blockierende Sende-oder Empfangsoperations nutzen. Der Pufferspeicher blockiert nur dann, wenn dieser voll ist. Der Empfänger kann daher jederzeit bereit für eingehende Verbindungen sein, da er diese erst abarbeitet, wenn es für diesen günstig ist. Der Sender hingegen kann damit unabhängig vom Empfänger seine Nachrichten verschicken, da er davon ausgehen kann, dass diese im Puffer des Empfängers landen. 
 Statt der direkten Verbindung: ``Sender - Empfänger'' gibt es jetzt genau genommen die Verbindung ``Sender - Puffer - Empfänger''.  \\
