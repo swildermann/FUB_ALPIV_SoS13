@@ -1,0 +1,85 @@
+\documentclass[11pt,a4paper,DIV=10,]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fancybox}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{colortbl}
+
+% Define user colors using the RGB model
+\definecolor{dunkelgrau}{rgb}{0.8,0.8,0.8}
+\definecolor{hellgrau}{rgb}{0.95,0.95,0.95}
+\definecolor{middlegray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{orange}{rgb}{0.8,0.3,0.3}
+\definecolor{yac}{rgb}{0.6,0.6,0.1}
+
+% Zitation und Literaturverzeichnis
+\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
+\usepackage{cite}
+\usepackage{url}
+\bibliographystyle{unsrtnat}
+\usepackage[numbers]{natbib}
+%\usepackage[T1]{fontenc}
+
+% Formatierung für das Listing
+\lstset{
+   basicstyle=\scriptsize\ttfamily,
+   keywordstyle=\bfseries\ttfamily\color{orange},
+   stringstyle=\color{green}\ttfamily,
+   commentstyle=\color{middlegray}\ttfamily,
+   emph={square}, 
+   emphstyle=\color{blue}\texttt,
+   emph={[2]root,base},
+   emphstyle={[2]\color{yac}\texttt},
+   showstringspaces=false,
+   flexiblecolumns=false,
+   tabsize=2,
+   numbers=left,
+   numberstyle=\tiny,
+   numberblanklines=true,
+   stepnumber=1,
+   numbersep=10pt,
+   xleftmargin=15pt
+}
+
+\begin{document}
+% ==== HEADER ==== 
+\subsection*{ALP4 SoSe 2013, Di. 16-18}
+\section*{Lösung Übungsblatt 7}
+\textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677)} \\ \textbf{Sven Wildermann (Matr.-Nr.: 4567553)}\\
+Tutor: Alexander Steen, eingereicht am \today\\
+\hrule
+% === HEADER END ===
+\section*{Aufgabe 1}
+\subsection*{a)}
+Nebenläufigkeit kann eingesetzt werden, wenn Algorithmen nichtlinear rekursiv sind. Ein Beispiel dafür ist Mergesort. Prinzipiell lässt sich mit mehr oder weniger aufwendigen Konstrukten jeder Sortieralgorithmus nebenläufig realisiertn. In vielen Fällen ist dies jedoch nocht sinnvoll (s.u.).
+\subsection*{b)}
+Paralleles Sortieren ist aber nicht immer sinnvoll. Insbesondere auf Einprozessorsystemen ergibt sich nur dann ein Geschwindigkeitsvorteil, wenn verzahnte Aktivitäten unterschiedliche Ressourcen vewenden. Des Weiteren ist jeder Geschwindigkeitsvoteil hinfällig, wenn auf das Ergebnis einer anderen Operation gewartet werden muss, damit mit der Bearbeitung fortgefahren werden kann.
+\subsection*{c)} 
+Implementierung von Mergesort:
+\lstinputlisting{merge.go}
+\section*{Aufgabe 2}
+ \lstinputlisting{pmatrix.go}
+\section*{Aufgabe 3}
+Es wurden mehrfach die Anzahl der Prozesse und der Wert der Konstanten N geändert. Nachfolgend der Quellcode mit unterschiedlichen Verzögerungszeiten (durch Parametriesierung der Prozessnummer p):
+ \lstinputlisting{counter.go}
+\section*{Aufgabe 4}
+\subsection*{a)}
+Die im Buch erwähnten Antinome beschreiben die Tatsache, dass der Scheduler selbst ein Prozess ist. Es wird die Frage aufgeworfen, ob sich der Scheduler selbst verwaltet. Somit müsste er sich auch selbst unterbrechen. Die Frage wäre dann, wie ein präemptiver Scheduler 'zurückfindet'.
+
+Dies kann durch einen Timer-Interrupt mit hoher Priorität (Prioritätsmanagement des Prozessors, nicht Prozessprioritäten im BS) geschehen, der den Scheduler-Prozess aufruft. Das bedeutet, dass die Fähigkeit des Scheduler-Prozesses andere Prozesse verdrängen zu können bereits auf 'Hardware-Ebene' implementiert ist. Darüber hinaus kann festgelegt werden, dass bei präemptiven Scheduling zwischen zwei Zeitscheiben der Scheduling-Prozess selbst mit einer sehr hohen Priorität aufgerufen wird. Der Scheduler-Prozess ist also dementsprechend ein besonderer Prozess, der sich von 'normalen' Pro\-zess\-en unterscheidet. 
+\subsection*{b)} 
+Eine mögliche Strategie für das Verhalten eines Schedulers stellt das Zeitscheibenverfahren dar. Ziel ist eine gleichmäßige Verteilung der Prozessorkapazität und der Wartezeit auf die Prozesse. Dazu werden alle Prozesse ihrer Ankunftsreihenfolge nach bearbeitet. Nach Ablauf 
+einer bestimmten Frist wird auf den nächsten Prozess umgeschaltet. Die Wahl des Zeitintervalls stellt ein Optimierungsproblem dar: Für kleine 
+Bearbeitungszeiten wächst der Aufwand fur das häufige Umschalten, während große Zeiteinheiten einer 'First-come-first-serve' Strategie realisieren.
+
+Dementsprechend werden ankommende Prozesse in einer Warteschlane eingereiht. Der Scheduler nimmt den fordersten Prozess, führt ihn für eine bestimmte Zeit aus und fügt ihn anschließend ans Ende der Schlange wieder an, falls er noch nicht abgearbeitet sein sollte. Eine Schleife sorgt dafür, dass sich dieser Ablauf ständig wiederholt.
+\end{document}
