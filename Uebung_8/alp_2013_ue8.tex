@@ -59,6 +59,12 @@ Tutor: Alexander Steen, eingereicht am \today\\
 \hrule
 % === HEADER END ===
 \section*{Aufgabe 1}
+\subsection*{a)}
+Das Paket \texttt{rwmutex.go} implementiert ein spezielles Schloss, das zwar viele Prozesse lesen, aber nur einen schreiben lässt. Es werden dafür vier Zugriffsfunktionen definiert: \texttt{RLock()}, \texttt{RUnlock()}, \texttt{Lock() }und \texttt{Unlock()}. Will ein Prozess den Mutex für den Schreibzugriff nutzen obwohl gerade andere Prozesse lesen, wird dieser blockiert.
+Grundlage der Erläuterung ist folgendes kleines Beispiel:
+\lstinputlisting{rwmutex_exp.go}
+\subsection*{b)}
+\subsection*{c)}
 \section*{Aufgabe 2}
 \section*{Aufgabe 3}
 \section*{Aufgabe 4}
