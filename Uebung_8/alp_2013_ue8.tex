@@ -60,11 +60,16 @@ Tutor: Alexander Steen, eingereicht am \today\\
 % === HEADER END ===
 \section*{Aufgabe 1}
 \subsection*{a)}
-Das Paket \texttt{rwmutex.go} implementiert ein spezielles Schloss, das zwar viele Prozesse lesen, aber nur einen schreiben lässt. Es werden dafür vier Zugriffsfunktionen definiert: \texttt{RLock()}, \texttt{RUnlock()}, \texttt{Lock() }und \texttt{Unlock()}. Will ein Prozess den Mutex für den Schreibzugriff nutzen obwohl gerade andere Prozesse lesen, wird dieser blockiert.
+Der \texttt{RWMutex} (Read-Write-Mutex) ist das Standardinstrument, mit dem mehren Prozessen das gleichzeitige Lesen einer Ressource gestattet werden kann, während der schreibende Zugriff nur einem Prozess exklusiv möglich ist. \cite[vgl.][S. 185]{Feike2010}. Will ein Prozess den Mutex für den Schreibzugriff nutzen, obwohl gerade andere Prozesse lesen, wird dieser blockiert [vgl. ebd.]. Es werden dafür vier Zugriffsfunktionen definiert: \texttt{RLock()}, \texttt{RUnlock()}, \texttt{Lock() }und \texttt{Unlock()}. 
 Grundlage der Erläuterung ist folgendes kleines Beispiel:
-\lstinputlisting{rwmutex_exp.go}
+\lstinputlisting[language=C]{rwmutex_exp.go}
+\textbf{Erläuterung:} Das Reader-Writer-Mutex \texttt{rwm} ist für den gegenseitigen Ausschluss von lesenden und schreibenden Prozessen (im Sinne seiner oben genannten Funktion) zuständig. Die Funktion \texttt{get} 'verschließt' \texttt{rwm} zunächst mittels \texttt{RLock()}, so dass keine 'Schreibzugriff' mehr möglich ist.  Nachdem \texttt{balance} gelesen und ausgegeben wurde, wird das Schloss mit \texttt{RUnlock()} wieder geöffnet. 
+
+Die Funktion \texttt{put} arbeitet nach dem gleichen Prinzip. Statt \texttt{RLock()} und \texttt{RUnlock()} kommt hier aber \texttt{Lock()} und \texttt{Unlock()} zum Einsatz, um andere Prozesse auch den lesenden Zugriff zu verweigern. 
 \subsection*{b)}
+Durch die oben genannte Struktur und die erläuterten Funktionen \texttt{RLock()}, \texttt{RUnlock()}, \texttt{Lock()} bzw. \texttt{Unlock()} ergibt sich unmittelbar, dass die Invariante eingehalten wird: Wenn ein Prozess als 'Schreiber' auf die Resource \texttt{balance}  mittels \texttt{put} zuzugreifen versucht, das Schloss \texttt{rwm} aber bereits durch \texttt{RLock()} oder \texttt{Lock()} verschlossen ist, wird er blockiert. Will ein 'Leser' auf die Ressource zugreifen während das Schloss verschlossen ist, gelingt ihm das nur, wenn \texttt{rwm} mittels \texttt{RLock()} verschlossen wurde, also ein 'Leser' gerade auf die Ressource zugreift. Andernfalls (ein Schreiber hat das Schloss mittels \texttt{Lock()} versperrt) wird er blockiert. 
 \subsection*{c)}
+Es wird das erste 'Leser-Schreiber-Problem' gelöst. \textbf{begründung:} Es können immer wieder neue 'Leser' auf die Ressource zugreifen, unabhängig davon ob bereits 'Schreiber' warten, oder nicht.
 \section*{Aufgabe 2}
 \subsection*{a)}
 Modellierung siehe Aufgabenteil b). Begründung der Korrektheit: Für jedes Gleis an einem Bahnhof gibt es als Semaphor so genannte ``Wächter''. Diese geben inital die Gleise frei. Sobald nun ein Zug das Gleis befahren möchte, wird ein Wächter für diesen Vorgang reserviert und das Gleis von diesem Wächter im Anschluss gesperrt. Nachdem der Zug dann durchgefahren ist, wird erst das Gleis durch den Wächter wieder freigegeben und anschließend der Wächter wieder für andere Vorgänge verfügbar. Die Zugriffe auf die Variablen sind durch mutexe geschützt. 
@@ -107,27 +112,27 @@ Algorithmus in Pseudocode.
   }
  func objekte_aktualisieren(){
       current objects;
-      // sortiert die Elemente nach Einfügezeit
+      // sortiert die Elemente nach Einfuegezeit
       mainqueue.sort(timestamp)
       leftqueue.sort(timestamp)
       rightqueue.sort(timestamp)
-      //überpruefen ob der Weg frei ist und ob ein 
+      //ueberpruefen ob der Weg frei ist und ob ein 
       // Objekt den Weg passieren will
       if islocked == 0 && (not mainqueue.isEmpty){
 	    current = mainqueue.get
 	    if current.richtung==0{
-		  // prüfe nach der Reihe ob es in lefftqueue 
+		  // pruefe nach der Reihe ob es in lefftqueue 
 		  // weitere Elemente gibt, die mit current
-		  // auf den Weg gehen können. 
-		  // Sende diese inkl. current los und lösche Sie aus 
-		  // den queues, erhöhe jeweils islocked um die Anzahl
+		  // auf den Weg gehen koennen. 
+		  // Sende diese inkl. current los und loesche Sie aus 
+		  // den queues, erhoehe jeweils islocked um die Anzahl
 		  // der losgeschickten Elemente
 	    }else if current.richtung==1{
-		  // prüfe nach der Reihe ob es in rightqueue 
+		  // pruefe nach der Reihe ob es in rightqueue 
 		  // weitere Elemente gibt, die mit current
-		  // auf den Weg gehen können. 
-		  // Sende diese inkl. current los und lösche Sie aus 
-		  // den queues, erhöhe jeweils islocked um die Anzahl
+		  // auf den Weg gehen koennen. 
+		  // Sende diese inkl. current los und loesche Sie aus 
+		  // den queues, erhoehe jeweils islocked um die Anzahl
 		  // der losgeschickten Elemente
            }
 	    
@@ -155,4 +160,7 @@ Anzahl der zur Zeit reisenden Objekte zu erhalten, wird der Counter islocked um 
 \section*{Aufgabe 4}
 Die Implementierung in GO compiliert leider nicht erfolgreich. In Anbetracht einer pünktlichen Abgabe habe ich es nicht mehr geschafft, dies noch zu fixen. 
 \lstinputlisting{matrix.go}
+
+\bibliographystyle{agsm}
+\bibliography{alp_IV}
 \end{document}

@@ -1,7 +1,8 @@
 package main
 import "fmt"
 
-
+/* Leider habe ich es nicht puenktlich
+geschafft den Code erfolgreich zum compilieren zu bringen*/ 
 
 func mult(matrix1 [][]int, matrix2 [][]int, e chan bool){
 
@@ -18,7 +19,6 @@ func mult(matrix1 [][]int, matrix2 [][]int, e chan bool){
      fmt.Println(newMa)
     e <- true
 }
-
 
 func rowCol( r int , c int, matrix1 [][]int, matrix2 [][]int, newMa [][]int,  e chan bool){
     var sum int = 0
@@ -41,6 +41,4 @@ func main(){
   q := make (chan bool)
   mult(matrix1 , matrix2, q)
   <-q
-
-
 }
