@@ -66,6 +66,13 @@ Grundlage der Erläuterung ist folgendes kleines Beispiel:
 \subsection*{b)}
 \subsection*{c)}
 \section*{Aufgabe 2}
+\subsection*{a)}
+Modellierung siehe Aufgabenteil b). Begründung der Korrektheit: Für jedes Gleis an einem Bahnhof gibt es als Semaphor so genannte ``Wächter''. Diese geben inital die Gleise frei. Sobald nun ein Zug das Gleis befahren möchte, wird ein Wächter für diesen Vorgang reserviert und das Gleis von diesem Wächter im Anschluss gesperrt. Nachdem der Zug dann durchgefahren ist, wird erst das Gleis durch den Wächter wieder freigegeben und anschließend der Wächter wieder für andere Vorgänge verfügbar. Die Zugriffe auf die Variablen sind durch mutexe geschützt. 
+\subsection*{b)}
+\lstinputlisting{bahnhof.go}
+\subsection*{c)}
+Ja, bei der Implementierung kann es zu Kollisionen zweier Züge an zusammenführenden Weichen kommen, da keine Weichen sondern nur vollständig getrennte Gleise gesichert werden. Durch weitere Anpassungen (zusätzliche Wächter für Weichen) könnte dies jedoch verhindert werden. 
+
 \section*{Aufgabe 3}
 Algorithmus in Pseudocode.
 \begin{lstlisting}
@@ -146,5 +153,6 @@ Diese Funktion überprüft erst, welches das am längsten wartende Objekt ist un
 Anzahl der zur Zeit reisenden Objekte zu erhalten, wird der Counter islocked um den entsprechenden Wert erhöht. Sobald die einzelnen Elemente am Ziel angekommen sind, führen sie objekt-ist-angekommen() aus, der den Counter schrittweise wieder verringert. So wird in der Funktion objekte-aktualisieren sicher gestellt, dass keine neuen Objekte frei gelassen werden wenn noch nicht alle Objekte wieder angekommen sind. 
 
 \section*{Aufgabe 4}
-
+Die Implementierung in GO compiliert leider nicht erfolgreich. In Anbetracht einer pünktlichen Abgabe habe ich es nicht mehr geschafft, dies noch zu fixen. 
+\lstinputlisting{matrix.go}
 \end{document}
