@@ -7,6 +7,7 @@
 *.log
 *.gz
 *.dvi
+*.backup
 
 # Vim #
 #######
