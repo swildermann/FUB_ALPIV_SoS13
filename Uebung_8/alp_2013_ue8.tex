@@ -71,8 +71,96 @@ Durch die oben genannte Struktur und die erläuterten Funktionen \texttt{RLock()
 \subsection*{c)}
 Es wird das erste 'Leser-Schreiber-Problem' gelöst. \textbf{begründung:} Es können immer wieder neue 'Leser' auf die Ressource zugreifen, unabhängig davon ob bereits 'Schreiber' warten, oder nicht.
 \section*{Aufgabe 2}
+\subsection*{a)}
+Modellierung siehe Aufgabenteil b). Begründung der Korrektheit: Für jedes Gleis an einem Bahnhof gibt es als Semaphor so genannte ``Wächter''. Diese geben inital die Gleise frei. Sobald nun ein Zug das Gleis befahren möchte, wird ein Wächter für diesen Vorgang reserviert und das Gleis von diesem Wächter im Anschluss gesperrt. Nachdem der Zug dann durchgefahren ist, wird erst das Gleis durch den Wächter wieder freigegeben und anschließend der Wächter wieder für andere Vorgänge verfügbar. Die Zugriffe auf die Variablen sind durch mutexe geschützt. 
+\subsection*{b)}
+\lstinputlisting{bahnhof.go}
+\subsection*{c)}
+Ja, bei der Implementierung kann es zu Kollisionen zweier Züge an zusammenführenden Weichen kommen, da keine Weichen sondern nur vollständig getrennte Gleise gesichert werden. Durch weitere Anpassungen (zusätzliche Wächter für Weichen) könnte dies jedoch verhindert werden. 
+
 \section*{Aufgabe 3}
+Algorithmus in Pseudocode.
+\begin{lstlisting}
+ // Variabeldeklarationen
+ type objects struct {
+     Enum groesse = {gross, mittel, klein}
+     bool richtung
+     time timestamp_incoming}
+ mainqueue (queue)objects
+ leftqueue (queue)objects
+ rightqueue (queue)objects
+ islocked int
+ 
+ // Algorithmus
+ func add_object(new objects){
+      // 0 = von links nach rechts
+      // 1 = von rechts nach links 
+     if new.richtung=0{
+	    leftqueue.add(new)
+      }else{
+	    rightqueue.add(new)
+      }
+      if mainqueue.isEmpty{
+	     // wenn es das erste Element ist,
+	     // wird die Aktualisierung angestossen
+             mainqueue.add(new)
+             objekte_aktualisieren()
+      }else{
+	    //sonst nicht
+             mainqueue.add(new)
+      }
+  }
+ func objekte_aktualisieren(){
+      current objects;
+      // sortiert die Elemente nach Einfuegezeit
+      mainqueue.sort(timestamp)
+      leftqueue.sort(timestamp)
+      rightqueue.sort(timestamp)
+      //ueberpruefen ob der Weg frei ist und ob ein 
+      // Objekt den Weg passieren will
+      if islocked == 0 && (not mainqueue.isEmpty){
+	    current = mainqueue.get
+	    if current.richtung==0{
+		  // pruefe nach der Reihe ob es in lefftqueue 
+		  // weitere Elemente gibt, die mit current
+		  // auf den Weg gehen koennen. 
+		  // Sende diese inkl. current los und loesche Sie aus 
+		  // den queues, erhoehe jeweils islocked um die Anzahl
+		  // der losgeschickten Elemente
+	    }else if current.richtung==1{
+		  // pruefe nach der Reihe ob es in rightqueue 
+		  // weitere Elemente gibt, die mit current
+		  // auf den Weg gehen koennen. 
+		  // Sende diese inkl. current los und loesche Sie aus 
+		  // den queues, erhoehe jeweils islocked um die Anzahl
+		  // der losgeschickten Elemente
+           }
+	    
+	    
+      }
+ 
+ }
+ 
+ func objekt_ist_angekommen(){
+      // wird vom Objekt aufgerufen
+      // sobald ein Objekt angekommen ist
+      islocked.lock();
+      islocked--;
+      islocked.unlock();
+      objekte_aktualisieren();
+ }
+      
+ 
+\end{lstlisting}
+
+Dadurch dass die Queues nach der Einfügezeit der Objekte sortiert werden führt auch ein nebenläufiges einfügen zur korrekten Reihenfolge der Elemente in der Queue. Sobald entweder ein Objekt angekommen ist oder ein Objekt in die leere haupt-queue eingefügt wird, wird ``objekte-aktualisieren'' ausgeführt.
+Diese Funktion überprüft erst, welches das am längsten wartende Objekt ist und dann welche Elemente aus der Queue der selben Richtung mit diesem Element möglicherweise zusammen losgeschickt werden könnten. Diese werden dann alle zusammen losgelassen (Barriere wird geöffnet). Um einen Überblick über die 
+Anzahl der zur Zeit reisenden Objekte zu erhalten, wird der Counter islocked um den entsprechenden Wert erhöht. Sobald die einzelnen Elemente am Ziel angekommen sind, führen sie objekt-ist-angekommen() aus, der den Counter schrittweise wieder verringert. So wird in der Funktion objekte-aktualisieren sicher gestellt, dass keine neuen Objekte frei gelassen werden wenn noch nicht alle Objekte wieder angekommen sind. 
+
 \section*{Aufgabe 4}
+Die Implementierung in GO compiliert leider nicht erfolgreich. In Anbetracht einer pünktlichen Abgabe habe ich es nicht mehr geschafft, dies noch zu fixen. 
+\lstinputlisting{matrix.go}
+
 \bibliographystyle{agsm}
 \bibliography{alp_IV}
 \end{document}
