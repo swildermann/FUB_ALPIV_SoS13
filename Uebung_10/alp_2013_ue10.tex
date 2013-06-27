@@ -60,6 +60,16 @@ Tutor: Alexander Steen, eingereicht am \today\\
 % === HEADER END ===
 \section*{Aufgabe 1}
 \section*{Aufgabe 2}
+Das Zigarettenraucherproblem wurde mit Hilfe von Botschaftenaustausch gelöst, in dem der Tisch als Channel entwickelt wurde. 
+Sobald für einen Raucher das richtige auf dem Tisch liegt, ``nimmt'' sich dieser das entsprechende Equipment und fängt an, seine Zigarette zu rauchen.
+Sobald er mit dem Rauchen fertig ist, wird erneut der Wirt gerufen (ebenfalls über einen Channel - der Waiter). Dies wird von der Scheduler-Funktion erkannt und ruft den Wirt und die Raucher (damit diese wieder ``lauschen'') auf. 
+Der Zufall entscheidet was der Wirt bringt. Das Spiel beginnt anschließend von vorn. Weitere Details siehe Implementierung. \\
+
+Statt eine Funktion zu haben, die für alle Raucher verantwortlich ist, könnte man auch jeden Raucher einzeln modellieren und diese den Channel überprüfen lassen. Im Sinne der Übersichtlichkeit halte ich diese Version allerdings für angebrachter. 
+
+\lstinputlisting[language=c]{cigarettes.go}
+
+
 \section*{Aufgabe 3}
 \section*{Aufgabe 4}
 \bibliographystyle{agsm}
