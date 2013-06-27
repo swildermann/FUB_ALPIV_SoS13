@@ -47,7 +47,7 @@ func givesomething(cs chan int){
 func getsomething(cs chan int, waits chan int){
 //the smokers need to check who is able to smoke
 //so they check whether there is something on the table
-// and what it is  and decide because of that
+// and check what it is  and decide because of that
 	number := <-cs
 	time.Sleep(2*1e9)
 	if number==PapersTobacco {

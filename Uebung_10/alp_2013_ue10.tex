@@ -22,11 +22,11 @@
 \definecolor{yac}{rgb}{0.6,0.6,0.1}
 
 % Zitation und Literaturverzeichnis
-\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
-\usepackage{cite}
-\usepackage{url}
-\bibliographystyle{unsrtnat}
-\usepackage[numbers]{natbib}
+% \usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
+% \usepackage{cite}
+% \usepackage{url}
+% \bibliographystyle{unsrtnat}
+% \usepackage[numbers]{natbib}
 %\usepackage[T1]{fontenc}
 
 % Formatierung für das Listing
@@ -54,24 +54,34 @@
 % ==== HEADER ==== 
 \subsection*{ALP4 SoSe 2013, Di. 16-18}
 \section*{Lösung Übungsblatt 10}
-\textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677)} \\ \textbf{Sven Wildermann (Matr.-Nr.: 4567553)}\\
+\textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677)} \\ 
+\textbf{Sven Wildermann (Matr.-Nr.: 4567553)}\\
 Tutor: Alexander Steen, eingereicht am \today\\
 \hrule
 % === HEADER END ===
 \section*{Aufgabe 1}
+
+Das Krümmelmonsterproblem wird hier mit Hilfe von einer einmalig erzeugen Dose gelöst, die sowohl die 
+Kekse als auch eine Klingel für die Benachrichtungen enthält. Hierauf werden dann die Funktionen essen
+und backen ausgeführt. Sollen mehr kekse gegessen werden als in der Dose vorhanden sind, so wird über die 
+Funktion Send ein Signal an die Funktion backen geschickt, welche daraufhin die gewünschte Anzahl von Keksen backt.
+Sobald die Kekse fertig sind, wird über das Klingelsignal die Funktion essen wieder aufgeweckt. 
+Ein Beispielhafter Ablauf wird beim Start der main-Funktion gezeigt.  \\
+\lstinputlisting[language=c]{kekse.go}
+
 \section*{Aufgabe 2}
-Das Zigarettenraucherproblem wurde mit Hilfe von Botschaftenaustausch gelöst, in dem der Tisch als Channel entwickelt wurde. 
+Das Zigarettenraucherproblem wurde mit Hilfe von Botschaftenaustausch gelöst, in dem der Tisch als Channel entwickelt wurde. Es gibt 3 Zustände für die verschiedenen Kombinationen, die auf dem Tisch liegen können $+1$ falls garnichts auf dem Tisch liegt. 
 Sobald für einen Raucher das richtige auf dem Tisch liegt, ``nimmt'' sich dieser das entsprechende Equipment und fängt an, seine Zigarette zu rauchen.
 Sobald er mit dem Rauchen fertig ist, wird erneut der Wirt gerufen (ebenfalls über einen Channel - der Waiter). Dies wird von der Scheduler-Funktion erkannt und ruft den Wirt und die Raucher (damit diese wieder ``lauschen'') auf. 
 Der Zufall entscheidet was der Wirt bringt. Das Spiel beginnt anschließend von vorn. Weitere Details siehe Implementierung. \\
 
-Statt eine Funktion zu haben, die für alle Raucher verantwortlich ist, könnte man auch jeden Raucher einzeln modellieren und diese den Channel überprüfen lassen. Im Sinne der Übersichtlichkeit halte ich diese Version allerdings für angebrachter. 
+Statt eine Funktion zu haben, die für alle Raucher verantwortlich ist, könnte man auch jeden Raucher einzeln modellieren und diese den Channel überprüfen lassen. Hier wäre der wichtigste Unterschied, dass nach der Überprüfung des Wertes im Channel dieser im Falle einer \textbf{Nicht-Übereinstimmung} wieder zurück in den Channel geschrieben wird, damit das Equipment nicht verloren geht. Im Sinne der Übersichtlichkeit halte ich diese Version allerdings für angebrachter. 
 
 \lstinputlisting[language=c]{cigarettes.go}
 
 
 \section*{Aufgabe 3}
 \section*{Aufgabe 4}
-\bibliographystyle{agsm}
-\bibliography{alp_IV}
+%\bibliographystyle{agsm}
+%\bibliography{alp_IV}
 \end{document}
