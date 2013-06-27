@@ -1,0 +1,67 @@
+\documentclass[11pt,a4paper,DIV=10,]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{fancybox}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{colortbl}
+
+% Define user colors using the RGB model
+\definecolor{dunkelgrau}{rgb}{0.8,0.8,0.8}
+\definecolor{hellgrau}{rgb}{0.95,0.95,0.95}
+\definecolor{middlegray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{orange}{rgb}{0.8,0.3,0.3}
+\definecolor{yac}{rgb}{0.6,0.6,0.1}
+
+% Zitation und Literaturverzeichnis
+\usepackage[normal,font={small,color=black}, labelfont=bf,figurename=Abb.]{caption}
+\usepackage{cite}
+\usepackage{url}
+\bibliographystyle{unsrtnat}
+\usepackage[numbers]{natbib}
+%\usepackage[T1]{fontenc}
+
+% Formatierung für das Listing
+\lstset{
+   basicstyle=\scriptsize\ttfamily,
+   keywordstyle=\bfseries\ttfamily\color{orange},
+   stringstyle=\color{green}\ttfamily,
+   commentstyle=\color{middlegray}\ttfamily,
+   emph={square}, 
+   emphstyle=\color{blue}\texttt,
+   emph={[2]root,base},
+   emphstyle={[2]\color{yac}\texttt},
+   showstringspaces=false,
+   flexiblecolumns=false,
+   tabsize=2,
+   numbers=left,
+   numberstyle=\tiny,
+   numberblanklines=true,
+   stepnumber=1,
+   numbersep=10pt,
+   xleftmargin=15pt
+}
+
+\begin{document}
+% ==== HEADER ==== 
+\subsection*{ALP4 SoSe 2013, Di. 16-18}
+\section*{Lösung Übungsblatt 10}
+\textbf{Christoph van Heteren-Frese (Matr.-Nr.: 4465677)} \\ \textbf{Sven Wildermann (Matr.-Nr.: 4567553)}\\
+Tutor: Alexander Steen, eingereicht am \today\\
+\hrule
+% === HEADER END ===
+\section*{Aufgabe 1}
+\section*{Aufgabe 2}
+\section*{Aufgabe 3}
+\section*{Aufgabe 4}
+\bibliographystyle{agsm}
+\bibliography{alp_IV}
+\end{document}
