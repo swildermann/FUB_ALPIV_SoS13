@@ -78,10 +78,11 @@ Der Zufall entscheidet was der Wirt bringt. Das Spiel beginnt anschließend von 
 Statt eine Funktion zu haben, die für alle Raucher verantwortlich ist, könnte man auch jeden Raucher einzeln modellieren und diese den Channel überprüfen lassen. Hier wäre der wichtigste Unterschied, dass nach der Überprüfung des Wertes im Channel dieser im Falle einer \textbf{Nicht-Übereinstimmung} wieder zurück in den Channel geschrieben wird, damit das Equipment nicht verloren geht. Im Sinne der Übersichtlichkeit halte ich diese Version allerdings für angebrachter. 
 
 \lstinputlisting[language=c]{cigarettes.go}
-
-
-\section*{Aufgabe 3}
+%\section*{Aufgabe 3}
 \section*{Aufgabe 4}
+Das hier gegebene Implementierung entspricht weitestgehend dem Ansatz im Buch. Lediglich die Idee, einen zusätzlichen Kanal für das Signalisieren der Absicht zu empfangen wurde hinzugefügt. 
+\lstinputlisting[language=c]{async.go}
+Ein neuer asynchroner Kanal mit einer Buffergröße von \texttt{n} kann somit mit \\ \texttt{asyncChannel:=async.New(n)} erzeugt werden. Mit \texttt{asyncChannel.Send} kann eine Botschaft versendet werden, mit \texttt{asyncChannel.Recieve }kann eine Botschaft empfangen werden.
 %\bibliographystyle{agsm}
 %\bibliography{alp_IV}
 \end{document}
